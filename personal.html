@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人主页 - 科谛量化</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
+            color: #fde047;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1152px;
+            margin: 0 auto;
+            padding: 0 24px;
+            padding-top: 96px;
+            padding-bottom: 64px;
+        }
+
+        /* Navigation Header */
+        .nav-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+        }
+
+        .nav-container {
+            max-width: 1152px;
+            margin: 0 auto;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .nav-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transform: skewX(-1deg);
+            filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.4));
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-title:hover {
+            opacity: 0.8;
+        }
+
+        .nav-dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 192px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 8px;
+            margin-top: 0px;
+        }
+
+        .nav-dropdown:hover .nav-dropdown-content {
+            display: block;
+        }
+
+        .nav-dropdown-item {
+            display: block;
+            padding: 12px 16px;
+            color: #fde047;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-dropdown-item:hover {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fef3c7;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: rgba(254, 240, 138, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            letter-spacing: 0.05em;
+            transform: skewX(-1deg);
+            filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.3));
+        }
+
+        .nav-link:hover {
+            color: #fde047;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 80px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            flex-wrap: wrap;
+        }
+
+        .hero-content {
+            flex: 1;
+            min-width: 300px;
+            margin-bottom: 40px;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 24px;
+            background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transform: skewX(-1deg);
+            filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.4));
+            letter-spacing: 0.05em;
+        }
+
+        .hero-list {
+            margin-bottom: 24px;
+        }
+
+        .hero-list ul {
+            list-style: none;
+            font-size: 1.1rem;
+            color: rgba(254, 240, 138, 0.8);
+            line-height: 1.8;
+        }
+
+        .hero-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .hero-list li::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            background: #fbbf24;
+            border-radius: 50%;
+            margin-right: 12px;
+        }
+
+        .hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .badge {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fde047;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            backdrop-filter: blur(16px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.2));
+            border: 1px solid rgba(251, 191, 36, 0.4);
+            color: #fde047;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(to right, rgba(251, 191, 36, 0.3), rgba(217, 119, 6, 0.3));
+            border-color: rgba(251, 191, 36, 0.6);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(to right, rgba(251, 191, 36, 0.1), rgba(217, 119, 6, 0.1));
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            color: #fde047;
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.2));
+            border-color: rgba(251, 191, 36, 0.5);
+        }
+
+        .hero-image {
+            flex: 0 0 auto;
+            text-align: center;
+        }
+
+        .profile-image {
+            width: 320px;
+            height: 448px;
+            border-radius: 8px;
+            object-fit: cover;
+            object-position: top;
+            border: 4px solid rgba(251, 191, 36, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s ease;
+            cursor: pointer;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Section Styles */
+        .section {
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 48px;
+            text-align: center;
+            background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transform: skewX(-1deg);
+            filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.4));
+        }
+
+        /* Card Styles */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+        }
+
+        .card {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            border-radius: 12px;
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(251, 191, 36, 0.4);
+            box-shadow: 0 20px 40px rgba(251, 191, 36, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #fbbf24;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: skewX(-1deg);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+        }
+
+        .card-content {
+            color: rgba(254, 240, 138, 0.8);
+            line-height: 1.7;
+        }
+
+        /* Skills Section Styles */
+        #skills .card {
+            height: 420px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #skills .card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .skill-item {
+            margin-bottom: 10px;
+        }
+
+        .skill-label {
+            font-size: clamp(0.75rem, 1.5vw, 0.85rem);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .skill-level {
+            font-size: clamp(0.75rem, 1.5vw, 0.85rem);
+            color: #fde047;
+            white-space: nowrap;
+        }
+
+        .skill-bar-container {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            border-radius: 999px;
+            height: 8px;
+            margin-top: 4px;
+        }
+
+        .skill-bar {
+            background: linear-gradient(to right, #fbbf24, #f59e0b);
+            height: 8px;
+            border-radius: 999px;
+            transition: width 0.3s ease;
+        }
+
+        /* Career Objective Hover Effects */
+        .career-objective-item:hover {
+            transform: translateY(-8px);
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            box-shadow: 0 8px 32px rgba(251, 191, 36, 0.2);
+        }
+
+        .career-objective-item:hover div {
+            background: linear-gradient(to right, rgba(251, 191, 36, 0.4), rgba(217, 119, 6, 0.4));
+            border-color: rgba(251, 191, 36, 0.6);
+            box-shadow: 0 4px 16px rgba(251, 191, 36, 0.3);
+        }
+
+        .career-objective-item:hover span {
+            transform: scale(1.2);
+        }
+
+        .career-objective-item:hover h3 {
+            color: #fbbf24;
+            filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.6));
+        }
+
+        .career-objective-item:hover p {
+            color: rgba(254, 240, 138, 0.9);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hero-section {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .profile-image {
+                width: 250px;
+                height: 350px;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            /* 移动端专业技能和认证改为单列 */
+            #skills > div {
+                grid-template-columns: 1fr !important;
+            }
+
+            #certifications > div {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="nav-header">
+        <div class="nav-container">
+            <div class="nav-dropdown">
+                <div class="nav-title">
+                    个人主页
+                    <span>▼</span>
+                </div>
+                <div class="nav-dropdown-content">
+                    <a href="index.html" class="nav-dropdown-item">主页</a>
+                    <a href="personal.html" class="nav-dropdown-item">个人主页</a>
+                    <a href="company.html" class="nav-dropdown-item">公司主页</a>
+                    <a href="products.html" class="nav-dropdown-item">产品业绩</a>
+                </div>
+            </div>
+
+            <div class="nav-menu">
+                <a href="#about" class="nav-link">关于我</a>
+                <a href="#skills" class="nav-link">专业技能</a>
+                <a href="#experience" class="nav-link">项目经验</a>
+                <a href="#certifications" class="nav-link">认证资质</a>
+                <a href="#contact" class="nav-link">联系方式</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section id="about" class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">柯先生</h1>
+                <div class="hero-list">
+                    <ul>
+                        <li>世界顶级对冲基金研究员</li>
+                        <li>国内金融机构风控专家</li>
+                        <li>ACCA、CIA、PMP、CISA持证人</li>
+                        <li>Kaggle Master</li>
+                        <li>TradingView特约策略研究员</li>
+                        <li>阿里达摩院AI专家认证</li>
+                    </ul>
+                </div>
+
+                <div class="hero-badges">
+                    <span class="badge">世界顶级对冲基金研究员</span>
+                    <span class="badge">Kaggle Master</span>
+                    <span class="badge">TradingView特约策略研究员</span>
+                    <span class="badge">阿里达摩院AI专家</span>
+                    <span class="badge">多项国际认证持证人</span>
+                </div>
+
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn btn-primary">联系我</a>
+                    <a href="company.html" class="btn btn-secondary">公司主页</a>
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <img src="assets/images/profile-photo.png" alt="柯先生的专业头像 - 金眼黑猫" class="profile-image">
+            </div>
+        </section>
+
+        <!-- Education & Language Section -->
+        <section class="section">
+            <div class="card-grid">
+                <!-- Education -->
+                <div class="card">
+                    <h3 class="card-title">
+                        <span class="card-icon">🎓</span>
+                        教育背景
+                    </h3>
+                    <div class="card-content">
+                        <div style="border-left: 4px solid #fbbf24; padding-left: 24px; margin-bottom: 24px;">
+                            <h4 style="font-size: 1.2rem; font-weight: 900; color: #fde047; margin-bottom: 8px;">麻省理工学院</h4>
+                            <p style="color: #fbbf24; font-weight: 900; margin-bottom: 4px;">人工智能博士后研究员</p>
+                        </div>
+                        <div style="border-left: 4px solid rgba(251, 191, 36, 0.5); padding-left: 24px;">
+                            <h4 style="font-size: 1.2rem; font-weight: 900; color: #fde047; margin-bottom: 8px;">广州大学</h4>
+                            <p style="color: rgba(254, 240, 138, 0.8); font-weight: 900; margin-bottom: 4px;">工商管理学学士</p>
+                            <p style="color: rgba(254, 240, 138, 0.7);">2011 - 2015</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Language Skills -->
+                <div class="card">
+                    <h3 class="card-title">
+                        <span class="card-icon">🌐</span>
+                        语言能力
+                    </h3>
+                    <div class="card-content">
+                        <div style="margin-bottom: 24px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <span style="font-weight: 900; color: #fde047;">英语 (TOEFL 108)</span>
+                                <span style="color: rgba(254, 240, 138, 0.8);">精通</span>
+                            </div>
+                            <div style="width: 100%; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(251, 191, 36, 0.2); border-radius: 999px; height: 12px; margin-bottom: 12px;">
+                                <div style="background: linear-gradient(to right, #fbbf24, #f59e0b); height: 12px; border-radius: 999px; width: 95%;"></div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; font-size: 0.9rem; color: rgba(254, 240, 138, 0.7);">
+                                <div>阅读: 30/30</div>
+                                <div>听力: 29/30</div>
+                                <div>口语: 22/30</div>
+                                <div>写作: 27/30</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <span style="font-weight: 900; color: #fde047;">粤语</span>
+                                <span style="color: rgba(254, 240, 138, 0.8);">母语</span>
+                            </div>
+                            <div style="width: 100%; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(251, 191, 36, 0.2); border-radius: 999px; height: 12px; margin-bottom: 8px;">
+                                <div style="background: linear-gradient(to right, #fbbf24, #f59e0b); height: 12px; border-radius: 999px; width: 100%;"></div>
+                            </div>
+                            <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.7);">
+                                自幼在粤语家庭环境中成长，热爱TVB和明珠台电视剧，熟悉粤语流行音乐和经典老歌
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="section">
+            <h2 class="section-title">专业技能</h2>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;">
+                <!-- Quantitative Finance -->
+                <div class="card">
+                    <h3 class="card-title">
+                        <span class="card-icon">📈</span>
+                        量化金融
+                    </h3>
+                    <div class="card-content">
+                        <div>
+                            <div class="skill-item">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span class="skill-label">量化策略开发</span>
+                                    <span class="skill-level">精通</span>
+                                </div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 95%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span class="skill-label">因子挖掘建模</span>
+                                    <span class="skill-level">精通</span>
+                                </div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 90%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span class="skill-label">高频交易算法</span>
+                                    <span class="skill-level">精通</span>
+                                </div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 90%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span class="skill-label">风险管理</span>
+                                    <span class="skill-level">熟练</span>
+                                </div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 85%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span class="skill-label">衍生品定价</span>
+                                    <span class="skill-level">熟练</span>
+                                </div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 80%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Management -->
+                <div class="card">
+                    <h3 class="card-title">
+                        <span class="card-icon">👥</span>
+                        项目管理
+                    </h3>
+                    <div class="card-content">
+                        <div>
+                            <div class="skill-item">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span class="skill-label">敏捷项目管理</span>
+                                    <span class="skill-level">精通</span>
+                                </div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 90%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span class="skill-label">产品规划</span>
+                                    <span class="skill-level">精通</span>
+                                </div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 90%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span class="skill-label">团队领导力</span>
+                                    <span class="skill-level">熟练</span>
+                                </div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 85%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span class="skill-label">风险评估</span>
+                                    <span class="skill-level">熟练</span>
+                                </div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 85%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span class="skill-label">反欺诈建模</span>
+                                    <span class="skill-level">熟练</span>
+                                </div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 80%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI & ML Skills -->
+                <div class="card">
+                    <h3 class="card-title">
+                        <span class="card-icon">🧠</span>
+                        人工智能
+                    </h3>
+                    <div class="card-content">
+                        <div>
+                            <div class="skill-item">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span class="skill-label">大模型微调</span>
+                                    <span class="skill-level">精通</span>
+                                </div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 95%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span class="skill-label">Transformer & NLP</span>
+                                    <span class="skill-level">精通</span>
+                                </div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 90%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span class="skill-label">深度学习框架</span>
+                                    <span class="skill-level">精通</span>
+                                </div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 90%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span class="skill-label">提示词工程</span>
+                                    <span class="skill-level">精通</span>
+                                </div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 95%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span class="skill-label">时序分析微调</span>
+                                    <span class="skill-level">精通</span>
+                                </div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 85%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Programming & Technology -->
+                <div class="card">
+                    <h3 class="card-title">
+                        <span class="card-icon">💻</span>
+                        编程技术
+                    </h3>
+                    <div class="card-content">
+                        <div>
+                            <div class="skill-item">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span class="skill-label">Python</span>
+                                    <span class="skill-level">精通</span>
+                                </div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 95%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span class="skill-label">JavaScript</span>
+                                    <span class="skill-level">熟练</span>
+                                </div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 85%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span class="skill-label">SQL & 数据库</span>
+                                    <span class="skill-level">精通</span>
+                                </div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 90%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span class="skill-label">大数据处理</span>
+                                    <span class="skill-level">熟练</span>
+                                </div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 85%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span class="skill-label">系统架构设计</span>
+                                    <span class="skill-level">熟练</span>
+                                </div>
+                                <div class="skill-bar-container">
+                                    <div class="skill-bar" style="width: 80%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+         </section>
+
+         <!-- Experience Section -->
+         <section id="experience" class="section">
+             <h2 class="section-title">项目经验</h2>
+             
+             <!-- Core Projects -->
+             <div style="background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(16px); border: 1px solid rgba(251, 191, 36, 0.2); padding: 32px; border-radius: 12px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); margin-bottom: 48px;">
+                 <h3 style="font-size: 1.5rem; font-weight: 900; color: #fbbf24; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; transform: skewX(-1deg); filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.4));">
+                     <span style="font-size: 1.5rem;">🚀</span>
+                     核心项目
+                 </h3>
+                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px;">
+                     <!-- Securities Analysis System -->
+                     <div class="card" style="margin: 0;">
+                         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                             <h4 style="font-size: 1.2rem; font-weight: 900; color: #fde047;">证券资产量化分析系统</h4>
+                             <span class="badge" style="font-size: 0.75rem;">软著 12730381</span>
+                         </div>
+                         <div style="margin-bottom: 16px;">
+                             <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                 <span style="font-size: 1rem; margin-right: 8px;">👥</span>
+                                 <span style="color: rgba(254, 240, 138, 0.8);">项目角色：</span>
+                                 <span style="color: rgba(254, 240, 138, 0.7); margin-left: 4px;">产品经理、项目经理、系统架构师</span>
+                             </div>
+                             <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                 <span style="font-size: 1rem; margin-right: 8px;">💻</span>
+                                 <span style="color: rgba(254, 240, 138, 0.8);">技术栈：</span>
+                                 <span style="color: rgba(254, 240, 138, 0.7); margin-left: 4px;">Python, JavaScript, MySQL, Backtrader</span>
+                             </div>
+                         </div>
+                         <div style="margin-bottom: 16px;">
+                             <h5 style="font-weight: 900; color: #fde047; margin-bottom: 8px;">核心技术：</h5>
+                             <p style="color: rgba(254, 240, 138, 0.7); font-size: 0.9rem; line-height: 1.6;">
+                                 集成AI技术提供智能化数据分析，使用Backtrader进行量化策略回测，结合Langchain和AI Agent实现智能问答系统
+                             </p>
+                         </div>
+                         <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                             <span class="badge" style="font-size: 0.8rem;">AI分析</span>
+                             <span class="badge" style="font-size: 0.8rem;">量化策略</span>
+                             <span class="badge" style="font-size: 0.8rem;">智能问答</span>
+                             <span class="badge" style="font-size: 0.8rem;">数据分析</span>
+                         </div>
+                     </div>
+
+                     <!-- AI Financial Q&A System -->
+                     <div class="card" style="margin: 0;">
+                         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                             <h4 style="font-size: 1.2rem; font-weight: 900; color: #fde047;">夜航星AI金融量化问答系统</h4>
+                             <span class="badge" style="font-size: 0.75rem;">软著申请中</span>
+                         </div>
+                         <div style="margin-bottom: 16px;">
+                             <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                 <span style="font-size: 1rem; margin-right: 8px;">👥</span>
+                                 <span style="color: rgba(254, 240, 138, 0.8);">项目角色：</span>
+                                 <span style="color: rgba(254, 240, 138, 0.7); margin-left: 4px;">系统架构师、AI算法工程师</span>
+                             </div>
+                             <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                 <span style="font-size: 1rem; margin-right: 8px;">💻</span>
+                                 <span style="color: rgba(254, 240, 138, 0.8);">技术栈：</span>
+                                 <span style="color: rgba(254, 240, 138, 0.7); margin-left: 4px;">LLaMA Factory, Ollama, LangChain</span>
+                             </div>
+                         </div>
+                         <div style="margin-bottom: 16px;">
+                             <h5 style="font-weight: 900; color: #fde047; margin-bottom: 8px;">创新亮点：</h5>
+                             <p style="color: rgba(254, 240, 138, 0.7); font-size: 0.9rem; line-height: 1.6;">
+                                 专门针对金融时序数据优化的大模型，使用LLaMA Factory进行时序分析微调，能够准确预测市场趋势
+                             </p>
+                         </div>
+                         <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                             <span class="badge" style="font-size: 0.8rem;">大模型微调</span>
+                             <span class="badge" style="font-size: 0.8rem;">时序分析</span>
+                             <span class="badge" style="font-size: 0.8rem;">智能问答</span>
+                             <span class="badge" style="font-size: 0.8rem;">金融预测</span>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+
+             <!-- Enterprise Projects -->
+             <div style="background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(16px); border: 1px solid rgba(251, 191, 36, 0.2); padding: 32px; border-radius: 12px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); margin-bottom: 48px;">
+                 <h3 style="font-size: 1.5rem; font-weight: 900; color: #fbbf24; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; transform: skewX(-1deg); filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.4));">
+                     <span style="font-size: 1.5rem;">🏢</span>
+                     企业级项目
+                 </h3>
+                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px;">
+                     <!-- Group Treasury System -->
+                     <div class="card" style="margin: 0;">
+                         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                             <h4 style="font-size: 1.2rem; font-weight: 900; color: #fde047;">集团司库项目</h4>
+                             <span class="badge" style="font-size: 0.75rem;">重点项目</span>
+                         </div>
+                         <div style="margin-bottom: 16px;">
+                             <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                 <span style="font-size: 1rem; margin-right: 8px;">👥</span>
+                                 <span style="color: rgba(254, 240, 138, 0.8);">项目角色：</span>
+                                 <span style="color: rgba(254, 240, 138, 0.7); margin-left: 4px;">项目经理、数据架构师</span>
+                             </div>
+                             <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                 <span style="font-size: 1rem; margin-right: 8px;">🗄️</span>
+                                 <span style="color: rgba(254, 240, 138, 0.8);">技术栈：</span>
+                                 <span style="color: rgba(254, 240, 138, 0.7); margin-left: 4px;">Presto, Oracle, MySQL, Python</span>
+                             </div>
+                         </div>
+                         <div style="margin-bottom: 16px;">
+                             <h5 style="font-weight: 900; color: #fde047; margin-bottom: 8px;">业务价值：</h5>
+                             <p style="color: rgba(254, 240, 138, 0.7); font-size: 0.9rem; line-height: 1.6;">
+                                 为集团提供统一的财务数据管理平台，满足国资委报送要求，大幅提升资金运作透明度
+                             </p>
+                         </div>
+                         <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                             <span class="badge" style="font-size: 0.8rem;">大数据</span>
+                             <span class="badge" style="font-size: 0.8rem;">数据治理</span>
+                             <span class="badge" style="font-size: 0.8rem;">报送管理</span>
+                             <span class="badge" style="font-size: 0.8rem;">风险控制</span>
+                         </div>
+                     </div>
+
+                     <!-- Anti-Fraud System -->
+                     <div class="card" style="margin: 0;">
+                         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                             <h4 style="font-size: 1.2rem; font-weight: 900; color: #fde047;">反欺诈模型项目</h4>
+                             <span class="badge" style="font-size: 0.75rem;">重点项目</span>
+                         </div>
+                         <div style="margin-bottom: 16px;">
+                             <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                 <span style="font-size: 1rem; margin-right: 8px;">👥</span>
+                                 <span style="color: rgba(254, 240, 138, 0.8);">项目角色：</span>
+                                 <span style="color: rgba(254, 240, 138, 0.7); margin-left: 4px;">数据分析师、模型工程师</span>
+                             </div>
+                             <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                 <span style="font-size: 1rem; margin-right: 8px;">🛡️</span>
+                                 <span style="color: rgba(254, 240, 138, 0.8);">技术栈：</span>
+                                 <span style="color: rgba(254, 240, 138, 0.7); margin-left: 4px;">LightGBM, CatBoost, Python</span>
+                             </div>
+                         </div>
+                         <div style="margin-bottom: 16px;">
+                             <h5 style="font-weight: 900; color: #fde047; margin-bottom: 8px;">实际效果：</h5>
+                             <p style="color: rgba(254, 240, 138, 0.7); font-size: 0.9rem; line-height: 1.6;">
+                                 使用LightGBM和CatBoost构建高效反欺诈模型，显著降低企业欺诈损失，提升风险控制能力
+                             </p>
+                         </div>
+                         <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                             <span class="badge" style="font-size: 0.8rem;">机器学习</span>
+                             <span class="badge" style="font-size: 0.8rem;">风险管理</span>
+                             <span class="badge" style="font-size: 0.8rem;">实时监控</span>
+                             <span class="badge" style="font-size: 0.8rem;">反欺诈</span>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </section>
+
+         <!-- Competition Achievements -->
+         <section class="section">
+             <h2 class="section-title">量化竞赛成就</h2>
+             
+             <!-- WorldQuant Section -->
+             <div style="margin-bottom: 48px;">
+                 <h3 style="font-size: 1.5rem; font-weight: 900; margin-bottom: 24px; text-align: center; color: #fbbf24; transform: skewX(-1deg); filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.4));">
+                     WorldQuant 相关成就
+                 </h3>
+                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 24px; max-width: 800px; margin: 0 auto;">
+                     <div class="card" style="text-align: center;">
+                         <div style="font-size: 4rem; margin-bottom: 16px;">🏆</div>
+                         <h4 style="color: #fde047; font-weight: 900; margin-bottom: 8px; transform: skewX(-1deg);">WorldQuant金牌顾问</h4>
+                         <p style="color: rgba(254, 240, 138, 0.7); margin-bottom: 16px;">世界前2000名的专业认证</p>
+                         <span class="badge" style="margin-bottom: 8px;">13个夏普比>2因子</span>
+                         <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.6);">
+                             在WorldQuant Challenge中表现杰出，开发了13个夏普比大于2的实盘活跃因子
+                         </p>
+                     </div>
+
+                     <div class="card" style="text-align: center;">
+                         <div style="font-size: 4rem; margin-bottom: 16px;">🎯</div>
+                         <h4 style="color: #fde047; font-weight: 900; margin-bottom: 8px; transform: skewX(-1deg);">WorldQuant IQC</h4>
+                         <p style="color: rgba(254, 240, 138, 0.7); margin-bottom: 16px;">国际量化挑战赛</p>
+                         <span class="badge" style="margin-bottom: 8px;">Alpha模型构建</span>
+                         <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.6);">
+                             在WorldQuant BRAIN平台上构建和测试Alpha模型，展示量化分析技能
+                         </p>
+                     </div>
+                 </div>
+             </div>
+
+             <!-- Kaggle Section -->
+             <div>
+                 <h3 style="font-size: 1.5rem; font-weight: 900; margin-bottom: 24px; text-align: center; color: #fbbf24; transform: skewX(-1deg); filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.4));">
+                     Kaggle 竞赛成就
+                 </h3>
+                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+                     <div class="card" style="text-align: center;">
+                         <div style="font-size: 3rem; margin-bottom: 16px;">🥉</div>
+                         <h4 style="color: #fde047; font-size: 1.1rem; font-weight: 900; margin-bottom: 8px;">Home Credit - Credit Risk</h4>
+                         <p style="color: rgba(254, 240, 138, 0.7); margin-bottom: 12px; font-size: 0.9rem;">信贷风险模型稳定性预测</p>
+                         <p style="font-size: 0.8rem; color: rgba(254, 240, 138, 0.6); line-height: 1.6; margin-bottom: 16px;">
+                             预测客户违约风险，构建时间稳定的模型。为消费金融提供商提供更可靠、持久的客户违约风险评估方法。
+                         </p>
+                         <span class="badge">铜牌 Bronze</span>
+                     </div>
+
+                     <div class="card" style="text-align: center;">
+                         <div style="font-size: 3rem; margin-bottom: 16px;">🥈</div>
+                         <h4 style="color: #fde047; font-size: 1.1rem; font-weight: 900; margin-bottom: 8px;">Eedi - Mining Misconceptions</h4>
+                         <p style="color: rgba(254, 240, 138, 0.7); margin-bottom: 12px; font-size: 0.9rem;">数学错误概念挖掘</p>
+                         <p style="font-size: 0.8rem; color: rgba(254, 240, 138, 0.6); line-height: 1.6; margin-bottom: 16px;">
+                             开发NLP模型预测错误概念与错误答案的关联性，为专家教师标记错误概念提供候选建议，提升教育质量。
+                         </p>
+                         <span class="badge">银牌 Silver</span>
+                     </div>
+
+                     <div class="card" style="text-align: center;">
+                         <div style="font-size: 3rem; margin-bottom: 16px;">🥈</div>
+                         <h4 style="color: #fde047; font-size: 1.1rem; font-weight: 900; margin-bottom: 8px;">Jane Street Market Forecasting</h4>
+                         <p style="color: rgba(254, 240, 138, 0.7); margin-bottom: 12px; font-size: 0.9rem;">实时市场数据预测</p>
+                         <p style="font-size: 0.8rem; color: rgba(254, 240, 138, 0.6); line-height: 1.6; margin-bottom: 16px;">
+                             使用真实生产系统数据构建模型，应对金融市场建模挑战：厚尾分布、非平稳时间序列和市场行为突变。
+                         </p>
+                         <span class="badge">银牌 Silver</span>
+                     </div>
+                 </div>
+                           </div>
+          </section>
+
+          <!-- Certifications Section -->
+          <section id="certifications" class="section">
+              <h2 class="section-title">专业认证</h2>
+              <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; max-width: 1200px; margin: 0 auto;">
+                  <div class="card" style="text-align: center; max-width: 300px; margin: 0 auto;">
+                      <div style="width: 56px; height: 56px; background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.2)); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                          <span style="font-size: 2rem;">🏆</span>
+                      </div>
+                      <h3 style="font-size: 1.1rem; font-weight: 900; margin-bottom: 8px; color: #fde047;">PMP 项目管理专业人士</h3>
+                      <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.7); margin-bottom: 12px;">美国项目管理协会 (PMI)</p>
+                      <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.6); margin-bottom: 8px;">项目管理领域的专业能力和实践经验认证</p>
+                      <p style="font-size: 0.8rem; color: rgba(254, 240, 138, 0.5);">获得时间：2019年5月</p>
+                  </div>
+
+                  <div class="card" style="text-align: center; max-width: 300px; margin: 0 auto;">
+                      <div style="width: 56px; height: 56px; background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.2)); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                          <span style="font-size: 2rem;">🛡️</span>
+                      </div>
+                      <h3 style="font-size: 1.1rem; font-weight: 900; margin-bottom: 8px; color: #fde047;">CISA 注册信息系统审计师</h3>
+                      <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.7); margin-bottom: 12px;">ISACA</p>
+                      <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.6); margin-bottom: 8px;">信息系统审计、控制和安全领域的全球权威认证</p>
+                      <p style="font-size: 0.8rem; color: rgba(254, 240, 138, 0.5);">获得时间：2017年11月</p>
+                  </div>
+
+                  <div class="card" style="text-align: center; max-width: 300px; margin: 0 auto;">
+                      <div style="width: 56px; height: 56px; background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.2)); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                          <span style="font-size: 2rem;">🌱</span>
+                      </div>
+                      <h3 style="font-size: 1.1rem; font-weight: 900; margin-bottom: 8px; color: #fde047;">CFA ESG 特许分析师</h3>
+                      <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.7); margin-bottom: 12px;">CFA协会</p>
+                      <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.6); margin-bottom: 8px;">环境、社会和治理(ESG)投资分析的专业认证</p>
+                      <p style="font-size: 0.8rem; color: rgba(254, 240, 138, 0.5);">获得时间：2023年3月</p>
+                  </div>
+
+                  <div class="card" style="text-align: center; max-width: 300px; margin: 0 auto;">
+                      <div style="width: 56px; height: 56px; background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.2)); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                          <span style="font-size: 2rem;">📊</span>
+                      </div>
+                      <h3 style="font-size: 1.1rem; font-weight: 900; margin-bottom: 8px; color: #fde047;">ACCA 特许公认会计师</h3>
+                      <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.7); margin-bottom: 12px;">英国特许公认会计师公会</p>
+                      <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.6); margin-bottom: 8px;">全球认可的专业会计师资格认证</p>
+                      <p style="font-size: 0.8rem; color: rgba(254, 240, 138, 0.5);">获得时间：2015年6月</p>
+                  </div>
+
+                  <div class="card" style="text-align: center; max-width: 300px; margin: 0 auto;">
+                      <div style="width: 56px; height: 56px; background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.2)); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                          <span style="font-size: 2rem;">🔍</span>
+                      </div>
+                      <h3 style="font-size: 1.1rem; font-weight: 900; margin-bottom: 8px; color: #fde047;">CIA 注册内部审计师</h3>
+                      <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.7); margin-bottom: 12px;">国际内部审计师协会 (IIA)</p>
+                      <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.6); margin-bottom: 8px;">内部审计领域的全球权威专业认证</p>
+                      <p style="font-size: 0.8rem; color: rgba(254, 240, 138, 0.5);">获得时间：2016年11月</p>
+                  </div>
+
+                  <div class="card" style="text-align: center; max-width: 300px; margin: 0 auto;">
+                      <div style="width: 56px; height: 56px; background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.2)); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                          <span style="font-size: 2rem;">🧠</span>
+                      </div>
+                      <h3 style="font-size: 1.1rem; font-weight: 900; margin-bottom: 8px; color: #fde047;">达摩院AI训练师认证</h3>
+                      <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.7); margin-bottom: 12px;">阿里巴巴达摩院</p>
+                      <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.6); margin-bottom: 8px;">智能客服和AI应用开发方面的专业认证</p>
+                      <p style="font-size: 0.8rem; color: rgba(254, 240, 138, 0.5);">获得时间：2024年1月</p>
+                  </div>
+
+                  <div class="card" style="text-align: center; max-width: 300px; margin: 0 auto;">
+                      <div style="width: 56px; height: 56px; background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.2)); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                          <span style="font-size: 2rem;">📚</span>
+                      </div>
+                      <h3 style="font-size: 1.1rem; font-weight: 900; margin-bottom: 8px; color: #fde047;">耶鲁大学金融市场课程</h3>
+                      <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.7); margin-bottom: 12px;">耶鲁大学 & Coursera</p>
+                      <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.6); margin-bottom: 8px;">金融市场基础知识和投资策略认证</p>
+                      <p style="font-size: 0.8rem; color: rgba(254, 240, 138, 0.5);">获得时间：2023年9月</p>
+                  </div>
+
+                  <div class="card" style="text-align: center; max-width: 300px; margin: 0 auto;">
+                      <div style="width: 56px; height: 56px; background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.2)); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                          <span style="font-size: 2rem;">🧠</span>
+                      </div>
+                      <h3 style="font-size: 1.1rem; font-weight: 900; margin-bottom: 8px; color: #fde047;">Udacity深度学习认证</h3>
+                      <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.7); margin-bottom: 12px;">Udacity</p>
+                      <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.6); margin-bottom: 8px;">深度学习和神经网络领域的专业技能认证</p>
+                      <p style="font-size: 0.8rem; color: rgba(254, 240, 138, 0.5);">获得时间：2023年9月</p>
+                  </div>
+              </div>
+          </section>
+
+          <!-- Career Objective -->
+          <section style="padding: 80px 0; background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(16px); border: 1px solid rgba(251, 191, 36, 0.2); border-radius: 12px; margin-bottom: 80px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);">
+              <div style="max-width: 800px; margin: 0 auto; padding: 0 24px; text-align: center;">
+                  <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 32px; background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; transform: skewX(-1deg); filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.4));">
+                      职业目标
+                  </h2>
+                  <p style="font-size: 1.2rem; margin-bottom: 32px; color: rgba(254, 240, 138, 0.8); line-height: 1.8;">
+                      将金融量化分析与人工智能技术相结合，推动金融行业的创新和效率。
+                      致力于开发先进的量化交易模型和算法，运用AI工具进行风险管理，为投资决策提供数据驱动的洞察和建议。
+                  </p>
+                  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px; margin-top: 48px;">
+                      <div class="career-objective-item" style="text-align: center; transition: all 0.3s ease; cursor: pointer; padding: 20px; border-radius: 12px;">
+                          <div style="width: 64px; height: 64px; margin: 0 auto 16px; border-radius: 50%; background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.2)); border: 1px solid rgba(251, 191, 36, 0.3); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">
+                              <span style="font-size: 2rem; transition: transform 0.3s ease;">📈</span>
+                          </div>
+                          <h3 style="font-size: 1.2rem; font-weight: 900; margin-bottom: 8px; color: #fde047; transform: skewX(-1deg); transition: all 0.3s ease;">
+                              技术创新
+                          </h3>
+                          <p style="color: rgba(254, 240, 138, 0.7); transition: color 0.3s ease;">开发先进的量化交易模型和算法</p>
+                      </div>
+                      <div class="career-objective-item" style="text-align: center; transition: all 0.3s ease; cursor: pointer; padding: 20px; border-radius: 12px;">
+                          <div style="width: 64px; height: 64px; margin: 0 auto 16px; border-radius: 50%; background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.2)); border: 1px solid rgba(251, 191, 36, 0.3); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">
+                              <span style="font-size: 2rem; transition: transform 0.3s ease;">🛡️</span>
+                          </div>
+                          <h3 style="font-size: 1.2rem; font-weight: 900; margin-bottom: 8px; color: #fde047; transform: skewX(-1deg); transition: all 0.3s ease;">
+                              风险管理
+                          </h3>
+                          <p style="color: rgba(254, 240, 138, 0.7); transition: color 0.3s ease;">运用AI工具识别和量化金融风险</p>
+                      </div>
+                      <div class="career-objective-item" style="text-align: center; transition: all 0.3s ease; cursor: pointer; padding: 20px; border-radius: 12px;">
+                          <div style="width: 64px; height: 64px; margin: 0 auto 16px; border-radius: 50%; background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.2)); border: 1px solid rgba(251, 191, 36, 0.3); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">
+                              <span style="font-size: 2rem; transition: transform 0.3s ease;">👥</span>
+                          </div>
+                          <h3 style="font-size: 1.2rem; font-weight: 900; margin-bottom: 8px; color: #fde047; transform: skewX(-1deg); transition: all 0.3s ease;">
+                              行业领导
+                          </h3>
+                          <p style="color: rgba(254, 240, 138, 0.7); transition: color 0.3s ease;">成为金融科技领域的领导者</p>
+                      </div>
+                  </div>
+              </div>
+          </section>
+
+          <!-- Contact Section -->
+          <section id="contact" style="margin-bottom: 40px;">
+              <h2 class="section-title">联系方式</h2>
+              <div class="card">
+                  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px;">
+                      <div>
+                          <h3 style="font-size: 1.2rem; font-weight: 900; margin-bottom: 16px; color: #fde047; transform: skewX(-1deg);">
+                              联系信息
+                          </h3>
+                          <div style="display: flex; flex-direction: column; gap: 16px;">
+                              <div style="display: flex; align-items: center;">
+                                  <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.2)); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 50%; margin-right: 16px;">
+                                      <span style="font-size: 1.2rem;">📧</span>
+                                  </div>
+                                  <div>
+                                      <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.6); margin-bottom: 4px;">邮箱</p>
+                                      <p style="color: rgba(254, 240, 138, 0.8);">159****4827@163.com</p>
+                                  </div>
+                              </div>
+
+                              <div style="display: flex; align-items: center;">
+                                  <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.2)); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 50%; margin-right: 16px;">
+                                      <span style="font-size: 1.2rem;">📞</span>
+                                  </div>
+                                  <div>
+                                      <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.6); margin-bottom: 4px;">电话</p>
+                                      <p style="color: rgba(254, 240, 138, 0.8);">159****4827</p>
+                                  </div>
+                              </div>
+
+                              <div style="display: flex; align-items: center;">
+                                  <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.2)); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 50%; margin-right: 16px;">
+                                      <span style="font-size: 1.2rem;">📍</span>
+                                  </div>
+                                  <div>
+                                      <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.6); margin-bottom: 4px;">地址</p>
+                                      <p style="color: rgba(254, 240, 138, 0.8);">广东省广州市</p>
+                                  </div>
+                              </div>
+
+                              <div style="display: flex; align-items: center;">
+                                  <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.2)); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 50%; margin-right: 16px;">
+                                      <span style="font-size: 1.2rem;">🌐</span>
+                                  </div>
+                                  <div>
+                                      <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.6); margin-bottom: 4px;">个人网站</p>
+                                      <a href="https://kedibin.streamlit.app" target="_blank" style="color: rgba(254, 240, 138, 0.8); text-decoration: none; transition: color 0.3s ease;">
+                                          https://kedibin.streamlit.app
+                                      </a>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div style="margin-top: 32px;">
+                              <h3 style="font-size: 1.2rem; font-weight: 900; margin-bottom: 16px; color: #fde047; transform: skewX(-1deg);">
+                                  社交媒体
+                              </h3>
+                              <div style="display: flex; gap: 16px;">
+                                  <a href="#" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: linear-gradient(to right, rgba(251, 191, 36, 0.1), rgba(217, 119, 6, 0.1)); border: 1px solid rgba(251, 191, 36, 0.2); border-radius: 50%; transition: all 0.3s ease; text-decoration: none;">
+                                      <span style="font-size: 1.2rem;">💼</span>
+                                  </a>
+                                  <a href="#" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: linear-gradient(to right, rgba(251, 191, 36, 0.1), rgba(217, 119, 6, 0.1)); border: 1px solid rgba(251, 191, 36, 0.2); border-radius: 50%; transition: all 0.3s ease; text-decoration: none;">
+                                      <span style="font-size: 1.2rem;">🐙</span>
+                                  </a>
+                                  <a href="#" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: linear-gradient(to right, rgba(251, 191, 36, 0.1), rgba(217, 119, 6, 0.1)); border: 1px solid rgba(251, 191, 36, 0.2); border-radius: 50%; transition: all 0.3s ease; text-decoration: none;">
+                                      <span style="font-size: 1.2rem;">💬</span>
+                                  </a>
+                                  <a href="#" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: linear-gradient(to right, rgba(251, 191, 36, 0.1), rgba(217, 119, 6, 0.1)); border: 1px solid rgba(251, 191, 36, 0.2); border-radius: 50%; transition: all 0.3s ease; text-decoration: none;">
+                                      <span style="font-size: 1.2rem;">📚</span>
+                                  </a>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div style="display: flex; flex-direction: column; align-items: center;">
+                          <h3 style="font-size: 1.2rem; font-weight: 900; margin-bottom: 24px; color: #fde047; transform: skewX(-1deg);">
+                              个人二维码
+                          </h3>
+                          <div style="background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(251, 191, 36, 0.3); padding: 16px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;">
+                              <img src="assets/images/fake-erweima.jpg" alt="个人联系二维码" style="width: 256px; height: 256px; object-fit: cover; border-radius: 8px; transition: transform 0.3s ease;">
+                          </div>
+                          <p style="font-size: 0.9rem; color: rgba(254, 240, 138, 0.6); margin-top: 16px; text-align: center;">扫描二维码添加联系人</p>
+                      </div>
+                  </div>
+              </div>
+          </section>
+      </div>
+
+      <!-- Footer -->
+      <footer style="background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(16px); border-top: 1px solid rgba(251, 191, 36, 0.2); color: #fde047; padding: 40px 0;">
+          <div style="max-width: 1152px; margin: 0 auto; padding: 0 16px;">
+              <div style="display: flex; flex-direction: column; justify-content: space-between; align-items: center; gap: 24px;">
+                  <div style="text-align: center;">
+                      <h2 style="font-size: 1.5rem; font-weight: 900; background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px; transform: skewX(-1deg); filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.4));">
+                          柯先生
+                      </h2>
+                      <p style="color: rgba(254, 240, 138, 0.7);">量化金融专家 · AI产品经理</p>
+                  </div>
+
+                  <div style="display: flex; gap: 32px; flex-wrap: wrap; justify-content: center;">
+                      <a href="#about" style="color: rgba(254, 240, 138, 0.7); text-decoration: none; transition: color 0.3s ease;">关于我</a>
+                      <a href="#skills" style="color: rgba(254, 240, 138, 0.7); text-decoration: none; transition: color 0.3s ease;">专业技能</a>
+                      <a href="#experience" style="color: rgba(254, 240, 138, 0.7); text-decoration: none; transition: color 0.3s ease;">项目经验</a>
+                      <a href="#certifications" style="color: rgba(254, 240, 138, 0.7); text-decoration: none; transition: color 0.3s ease;">认证资质</a>
+                      <a href="#contact" style="color: rgba(254, 240, 138, 0.7); text-decoration: none; transition: color 0.3s ease;">联系方式</a>
+                  </div>
+              </div>
+
+              <div style="border-top: 1px solid rgba(251, 191, 36, 0.2); margin-top: 32px; padding-top: 32px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; gap: 16px;">
+                  <p style="color: rgba(254, 240, 138, 0.6); font-size: 0.9rem; text-align: center;">
+                      © 2025 柯先生. 专注量化金融与人工智能的交叉创新
+                  </p>
+                  <div style="display: flex; gap: 16px;">
+                      <a href="#" style="color: rgba(254, 240, 138, 0.6); text-decoration: none; transition: color 0.3s ease;">
+                          <span style="font-size: 1.2rem;">💼</span>
+                      </a>
+                      <a href="#" style="color: rgba(254, 240, 138, 0.6); text-decoration: none; transition: color 0.3s ease;">
+                          <span style="font-size: 1.2rem;">🐙</span>
+                      </a>
+                      <a href="#" style="color: rgba(254, 240, 138, 0.6); text-decoration: none; transition: color 0.3s ease;">
+                          <span style="font-size: 1.2rem;">💬</span>
+                      </a>
+                      <a href="#" style="color: rgba(254, 240, 138, 0.6); text-decoration: none; transition: color 0.3s ease;">
+                          <span style="font-size: 1.2rem;">📚</span>
+                      </a>
+                  </div>
+              </div>
+          </div>
+      </footer>
+
+      <script>
+        // Smooth scroll to sections
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 80;
+                    const elementPosition = target.offsetTop - offset;
+                    window.scrollTo({
+                        top: elementPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

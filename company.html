@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公司主页 - 科谛量化</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
+            color: #fde047;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1152px;
+            margin: 0 auto;
+            padding: 0 24px;
+            padding-top: 96px;
+            padding-bottom: 64px;
+        }
+
+        /* Navigation Header */
+        .nav-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+        }
+
+        .nav-container {
+            max-width: 1152px;
+            margin: 0 auto;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .nav-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transform: skewX(-1deg);
+            filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.4));
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-title:hover {
+            opacity: 0.8;
+        }
+
+        .nav-dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 192px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 8px;
+            margin-top: 0px;
+        }
+
+        .nav-dropdown:hover .nav-dropdown-content {
+            display: block;
+        }
+
+        .nav-dropdown-item {
+            display: block;
+            padding: 12px 16px;
+            color: #fde047;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-dropdown-item:hover {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fef3c7;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: rgba(254, 240, 138, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            letter-spacing: 0.05em;
+            transform: skewX(-1deg);
+            filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.3));
+        }
+
+        .nav-link:hover {
+            color: #fde047;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-bottom: 80px;
+        }
+
+        .hero-top {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 60px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-logo {
+            height: 160px;
+            width: auto;
+            border-radius: 8px;
+            border: 2px solid rgba(251, 191, 36, 0.3);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 24px;
+            background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transform: skewX(-1deg);
+            filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.4));
+            letter-spacing: 0.05em;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            color: rgba(254, 240, 138, 0.8);
+            line-height: 1.8;
+            letter-spacing: 0.05em;
+        }
+
+        .hero-features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Section Styles */
+        .section {
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 48px;
+            text-align: center;
+            background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transform: skewX(-1deg);
+            filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.4));
+        }
+
+        /* Card Styles */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+        }
+
+        .card {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            border-radius: 12px;
+            padding: 32px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(251, 191, 36, 0.4);
+            box-shadow: 0 20px 40px rgba(251, 191, 36, 0.1);
+        }
+
+        .card-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            border-radius: 50%;
+            background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.2));
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 900;
+            margin-bottom: 16px;
+            color: #fde047;
+            transform: skewX(-1deg);
+        }
+
+        .card-content {
+            color: rgba(254, 240, 138, 0.7);
+            line-height: 1.7;
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            backdrop-filter: blur(16px);
+            display: inline-block;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 12px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.2));
+            border: 1px solid rgba(251, 191, 36, 0.4);
+            color: #fde047;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(to right, rgba(251, 191, 36, 0.3), rgba(217, 119, 6, 0.3));
+            border-color: rgba(251, 191, 36, 0.6);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(to right, rgba(251, 191, 36, 0.1), rgba(217, 119, 6, 0.1));
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            color: #fde047;
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.2));
+            border-color: rgba(251, 191, 36, 0.5);
+        }
+
+        /* Strategy Cards */
+        .strategy-card {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            border-radius: 12px;
+            padding: 32px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .strategy-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(251, 191, 36, 0.4);
+            box-shadow: 0 20px 40px rgba(251, 191, 36, 0.1);
+        }
+
+        .strategy-metrics {
+            margin: 24px 0;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .metric-label {
+            color: rgba(254, 240, 138, 0.8);
+        }
+
+        .metric-value {
+            font-weight: 900;
+            color: #fbbf24;
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .profile-image {
+            width: 96px;
+            height: 96px;
+            margin: 0 auto 24px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .team-list {
+            text-align: left;
+            list-style: none;
+        }
+
+        .team-list li {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: rgba(254, 240, 138, 0.7);
+        }
+
+        .tech-list {
+            list-style: none;
+        }
+
+        .tech-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .tech-list li::before {
+            content: "";
+            width: 12px;
+            height: 12px;
+            background: #fbbf24;
+            border-radius: 50%;
+            margin-right: 12px;
+        }
+
+        /* Values Section */
+        .values-section {
+            padding: 80px 0;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            border-radius: 12px;
+            margin-bottom: 80px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+            margin-top: 48px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Contact Section */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.2));
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 50%;
+            margin-right: 16px;
+            font-size: 1.2rem;
+        }
+
+        .contact-info p:first-child {
+            font-size: 0.9rem;
+            color: rgba(254, 240, 138, 0.6);
+            margin-bottom: 4px;
+        }
+
+        .contact-info p:last-child {
+            color: rgba(254, 240, 138, 0.8);
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(251, 191, 36, 0.2);
+            color: #fde047;
+            padding: 40px 0;
+        }
+
+        .footer-content {
+            max-width: 1152px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        .footer-top {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .footer-brand h2 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            transform: skewX(-1deg);
+            filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.4));
+        }
+
+        .footer-brand p {
+            color: rgba(254, 240, 138, 0.7);
+        }
+
+        .footer-nav {
+            display: flex;
+            gap: 32px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-nav a {
+            color: rgba(254, 240, 138, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-nav a:hover {
+            color: #fde047;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(251, 191, 36, 0.2);
+            padding-top: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .footer-copyright {
+            color: rgba(254, 240, 138, 0.6);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-social a {
+            color: rgba(254, 240, 138, 0.6);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .footer-social a:hover {
+            color: #fde047;
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            padding: 16px;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 512px;
+            max-height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            color: #fde047;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: #fbbf24;
+        }
+
+        .modal img {
+            max-width: 100%;
+            max-height: 384px;
+            object-fit: contain;
+            margin: 0 auto;
+            border-radius: 8px;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hero-top {
+                flex-direction: column;
+                text-align: center;
+                gap: 24px;
+            }
+
+            .hero-logo {
+                height: 120px;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-features {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-top {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-nav {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="nav-header">
+        <div class="nav-container">
+            <div class="nav-dropdown">
+                <div class="nav-title">
+                    公司主页
+                    <span>▼</span>
+                </div>
+                <div class="nav-dropdown-content">
+                    <a href="index.html" class="nav-dropdown-item">主页</a>
+                    <a href="personal.html" class="nav-dropdown-item">个人主页</a>
+                    <a href="company.html" class="nav-dropdown-item">公司主页</a>
+                    <a href="products.html" class="nav-dropdown-item">产品业绩</a>
+                </div>
+            </div>
+
+            <div class="nav-menu">
+                <a href="#about" class="nav-link">公司简介</a>
+                <a href="#strategies" class="nav-link">量化策略</a>
+                <a href="#team" class="nav-link">团队介绍</a>
+                <a href="#contact" class="nav-link">联系我们</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section id="about" class="hero-section">
+            <div class="hero-top">
+                <img src="assets/images/company-logo.jpg" alt="科谛量化 Logo" class="hero-logo">
+                <div class="hero-content">
+                    <h1 class="hero-title">科谛量化</h1>
+                    <p class="hero-description">
+                        专注于人工智能驱动的量化投资策略，致力于为投资者提供稳健、高效的资产管理解决方案
+                    </p>
+                </div>
+            </div>
+
+            <div class="hero-features">
+                <div class="card">
+                    <div class="card-icon">🧠</div>
+                    <h3 class="card-title">AI驱动</h3>
+                    <p class="card-content">运用先进的人工智能技术，构建智能化投资决策系统</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">📈</div>
+                    <h3 class="card-title">量化策略</h3>
+                    <p class="card-content">基于数据驱动的量化模型，实现稳健的投资回报</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🛡️</div>
+                    <h3 class="card-title">风险控制</h3>
+                    <p class="card-content">严格的风险管理体系，保障投资资金安全</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Strategies Section -->
+        <section id="strategies" class="section">
+            <h2 class="section-title">三大量化策略产品</h2>
+            <div class="card-grid">
+                <!-- Cryptocurrency Strategy -->
+                <div class="strategy-card">
+                    <div class="card-icon">💰</div>
+                    <h3 class="card-title" style="font-size: 1.5rem; margin-bottom: 8px;">加密货币策略</h3>
+                    <p class="card-content" style="margin-bottom: 24px;">
+                        专注于加密货币市场的量化交易策略，利用市场波动性获取超额收益
+                    </p>
+                    <div class="strategy-metrics">
+                        <div class="metric-row">
+                            <span class="metric-label">年化收益率</span>
+                            <span class="metric-value">35-50%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">最大回撤</span>
+                            <span class="metric-value">≤15%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">夏普比率</span>
+                            <span class="metric-value">2.1</span>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="products.html#crypto" class="btn btn-primary">业绩展示</a>
+                        <button class="btn btn-secondary" onclick="showPurchaseModal()">购买产品</button>
+                    </div>
+                </div>
+
+                <!-- A-Stock Strategy -->
+                <div class="strategy-card">
+                    <div class="card-icon">📊</div>
+                    <h3 class="card-title" style="font-size: 1.5rem; margin-bottom: 8px;">A股策略</h3>
+                    <p class="card-content" style="margin-bottom: 24px;">深度挖掘A股市场机会，通过多因子模型实现稳健增长</p>
+                    <div class="strategy-metrics">
+                        <div class="metric-row">
+                            <span class="metric-label">年化收益率</span>
+                            <span class="metric-value">20-30%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">最大回撤</span>
+                            <span class="metric-value">≤12%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">夏普比率</span>
+                            <span class="metric-value">1.8</span>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="products.html#astock" class="btn btn-primary">业绩展示</a>
+                        <button class="btn btn-secondary" onclick="showPurchaseModal()">购买产品</button>
+                    </div>
+                </div>
+
+                <!-- US Stock Strategy -->
+                <div class="strategy-card">
+                    <div class="card-icon">📉</div>
+                    <h3 class="card-title" style="font-size: 1.5rem; margin-bottom: 8px;">美股策略</h3>
+                    <p class="card-content" style="margin-bottom: 24px;">
+                        把握美股市场长期趋势，通过技术分析和基本面研究获取收益
+                    </p>
+                    <div class="strategy-metrics">
+                        <div class="metric-row">
+                            <span class="metric-label">年化收益率</span>
+                            <span class="metric-value">25-35%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">最大回撤</span>
+                            <span class="metric-value">≤10%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">夏普比率</span>
+                            <span class="metric-value">2.0</span>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="products.html#usstock" class="btn btn-primary">业绩展示</a>
+                        <button class="btn btn-secondary" onclick="showPurchaseModal()">购买产品</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section id="team" class="section">
+            <h2 class="section-title">核心团队</h2>
+            <div class="team-grid">
+                <div class="card" style="text-align: center;">
+                    <div class="profile-image">
+                        <img src="assets/images/profile-photo.png" alt="柯先生">
+                    </div>
+                    <h3 class="card-title" style="font-size: 1.5rem; margin-bottom: 8px;">柯先生</h3>
+                    <p style="color: #fbbf24; font-weight: 900; margin-bottom: 16px;">创始人 & 首席量化官</p>
+                    <ul class="team-list">
+                        <li>• 世界顶级对冲基金研究员</li>
+                        <li>• Kaggle Master</li>
+                        <li>• WorldQuant金牌顾问</li>
+                        <li>• 麻省理工学院AI博士后</li>
+                        <li>• 多项国际认证持证人</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title" style="font-size: 1.5rem; margin-bottom: 24px; text-align: center;">技术优势</h3>
+                    <ul class="tech-list">
+                        <li>AI大模型微调技术</li>
+                        <li>高频交易算法开发</li>
+                        <li>多因子模型构建</li>
+                        <li>风险管理系统</li>
+                        <li>实时数据处理</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Company Values -->
+        <section class="values-section">
+            <div style="max-width: 800px; margin: 0 auto; padding: 0 24px; text-align: center;">
+                <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 32px; background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; transform: skewX(-1deg); filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.4));">
+                    企业价值观
+                </h2>
+                <div class="values-grid">
+                    <div style="text-align: center;">
+                        <div class="card-icon">🎯</div>
+                        <h3 class="card-title">精准投资</h3>
+                        <p class="card-content">基于数据驱动的精准投资决策</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div class="card-icon">🛡️</div>
+                        <h3 class="card-title">稳健增长</h3>
+                        <p class="card-content">追求长期稳健的投资回报</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div class="card-icon">⚡</div>
+                        <h3 class="card-title">持续创新</h3>
+                        <p class="card-content">不断探索前沿技术和投资策略</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" style="margin-bottom: 40px;">
+            <h2 class="section-title">联系我们</h2>
+            <div class="card">
+                <div class="contact-grid">
+                    <div>
+                        <h3 style="font-size: 1.2rem; font-weight: 900; margin-bottom: 16px; color: #fde047; transform: skewX(-1deg);">
+                            联系信息
+                        </h3>
+                        <div style="display: flex; flex-direction: column; gap: 16px;">
+                            <div class="contact-item">
+                                <div class="contact-icon">📧</div>
+                                <div class="contact-info">
+                                    <p>邮箱</p>
+                                    <p>contact@keditech.com</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">📞</div>
+                                <div class="contact-info">
+                                    <p>电话</p>
+                                    <p>400-888-9999</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">📍</div>
+                                <div class="contact-info">
+                                    <p>地址</p>
+                                    <p>广东省广州市天河区珠江新城</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">🌐</div>
+                                <div class="contact-info">
+                                    <p>官网</p>
+                                    <a href="https://keditech.com" target="_blank" style="color: rgba(254, 240, 138, 0.8); text-decoration: none; transition: color 0.3s ease;">
+                                        www.keditech.com
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 style="font-size: 1.2rem; font-weight: 900; margin-bottom: 16px; color: #fde047; transform: skewX(-1deg);">
+                            业务咨询
+                        </h3>
+                        <p style="color: rgba(254, 240, 138, 0.7); margin-bottom: 24px;">
+                            如果您对我们的量化投资策略感兴趣，欢迎联系我们获取更多详细信息。我们的专业团队将为您提供个性化的投资解决方案。
+                        </p>
+                        <div>
+                            <button class="btn btn-primary">预约咨询</button>
+                            <button class="btn btn-secondary">下载产品手册</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <h2>科谛量化</h2>
+                    <p>专业的AI驱动量化投资平台</p>
+                </div>
+
+                <div class="footer-nav">
+                    <a href="#about">公司简介</a>
+                    <a href="#strategies">量化策略</a>
+                    <a href="#team">团队介绍</a>
+                    <a href="#contact">联系我们</a>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="footer-copyright">© 2025 科谛量化. 专注AI驱动的量化投资</p>
+                <div class="footer-social">
+                    <a href="#">💼</a>
+                    <a href="#">🐙</a>
+                    <a href="#">💬</a>
+                    <a href="#">📚</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Purchase Modal -->
+    <div id="purchaseModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" onclick="hidePurchaseModal()">&times;</span>
+            <div style="text-align: center;">
+                <h3 style="font-size: 1.5rem; font-weight: 900; margin-bottom: 16px; color: #fde047; transform: skewX(-1deg);">
+                    产品购买
+                </h3>
+                <img src="assets/images/fake-taobaoma.jpg" alt="产品购买二维码">
+                <p style="color: rgba(254, 240, 138, 0.7); margin-top: 16px;">扫描二维码购买产品</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scroll to sections
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 80;
+                    const elementPosition = target.offsetTop - offset;
+                    window.scrollTo({
+                        top: elementPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Modal functions
+        function showPurchaseModal() {
+            document.getElementById('purchaseModal').style.display = 'flex';
+        }
+
+        function hidePurchaseModal() {
+            document.getElementById('purchaseModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('purchaseModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hidePurchaseModal();
+            }
+        });
+    </script>
+</body>
+</html> 

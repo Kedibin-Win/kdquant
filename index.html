@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科谛量化 - AI量化投资专家</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #fbbf24;
+            overflow-x: hidden;
+        }
+
+        .container {
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0 24px;
+        }
+
+        /* Background Video */
+        .bg-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+
+        /* Navigation Header */
+        .nav-header {
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            z-index: 30;
+        }
+
+        .nav-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .nav-button {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.2));
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 8px;
+            color: #fde047;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transform: skewX(-1deg);
+            filter: drop-shadow(0 0 8px rgba(253, 224, 71, 0.4));
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-button:hover {
+            background: linear-gradient(to right, rgba(251, 191, 36, 0.3), rgba(245, 158, 11, 0.3), rgba(217, 119, 6, 0.3));
+            filter: drop-shadow(0 0 15px rgba(253, 224, 71, 0.6));
+        }
+
+        .nav-dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 192px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 8px;
+            margin-top: 0px;
+        }
+
+        .nav-dropdown:hover .nav-dropdown-content {
+            display: block;
+        }
+
+        .nav-dropdown-item {
+            display: block;
+            padding: 12px 16px;
+            color: #fde047;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-dropdown-item:hover {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fef3c7;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1152px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Company Philosophy Section */
+        .philosophy-section {
+            margin-bottom: 58px;
+            transform: scale(0.9);
+            transform-origin: center top;
+        }
+
+        .main-title {
+            font-size: 2.7rem;
+            font-weight: 900;
+            margin-bottom: 14px;
+            background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            transform: skewX(-2deg);
+            filter: drop-shadow(0 0 9px rgba(251, 191, 36, 0.3));
+        }
+
+        .separator {
+            color: #fde047;
+            font-weight: 900;
+            margin: 0 12px;
+            font-size: 0.8em;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .separator::before {
+            content: '●';
+            color: #fde047;
+            font-size: 0.6em;
+        }
+
+        .subtitle {
+            font-size: 1.35rem;
+            font-weight: 900;
+            margin-top: 43px;
+            background: linear-gradient(to right, #f59e0b, #fbbf24, #eab308);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.27em;
+            text-transform: uppercase;
+            transform: skewX(-1deg);
+            filter: drop-shadow(0 0 7px rgba(245, 158, 11, 0.4));
+        }
+
+        /* Navigation Section */
+        .nav-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-top: 80px;
+            max-width: 1280px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .nav-card {
+            position: relative;
+            background: transparent;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            transform-origin: center;
+        }
+
+        .nav-card:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-card-content {
+            border-right: 1px solid rgba(217, 119, 6, 0.3);
+            padding: 48px 64px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .nav-card:last-child .nav-card-content {
+            border-right: none;
+        }
+
+        .nav-card-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transform: skewX(-1deg);
+            background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.3));
+        }
+
+        .nav-card:hover .nav-card-title {
+            background: linear-gradient(to right, #fde047, #f59e0b, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transform: skewX(-1deg) scale(1.1);
+            filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.6));
+        }
+
+        .nav-card-desc {
+            font-size: 1.25rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            letter-spacing: 0.1em;
+            background: linear-gradient(to right, #f59e0b, #fbbf24, #eab308);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.3));
+        }
+
+        .nav-card:hover .nav-card-desc {
+            background: linear-gradient(to right, #fcd34d, #f59e0b, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.5));
+        }
+
+        /* Hover Effects */
+        .nav-card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.2));
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-card:hover .nav-card-overlay {
+            opacity: 1;
+        }
+
+        .nav-card-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, rgba(251, 191, 36, 0.3), rgba(245, 158, 11, 0.3));
+            border-radius: 8px;
+            filter: blur(24px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-card:hover .nav-card-glow {
+            opacity: 1;
+        }
+
+        /* Decorative Elements */
+        .decorative-dots {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #fbbf24;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: pulse 2s infinite;
+        }
+
+        .dot-1 {
+            top: 25%;
+            left: 25%;
+        }
+
+        .dot-2 {
+            top: 33%;
+            right: 25%;
+            animation-delay: 1s;
+        }
+
+        .dot-3 {
+            bottom: 25%;
+            left: 33%;
+            animation-delay: 2s;
+        }
+
+        .dot-4 {
+            bottom: 33%;
+            right: 33%;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Background Pattern */
+        .bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.05;
+            background-image: 
+                radial-gradient(circle at 25% 25%, #fbbf24 1px, transparent 1px),
+                radial-gradient(circle at 75% 75%, #f59e0b 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .nav-section {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+            
+            .nav-card-content {
+                border-right: none;
+                padding: 32px;
+            }
+            
+            .nav-card-title {
+                font-size: 2rem;
+            }
+            
+            .nav-card-desc {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Background Video -->
+        <video class="bg-video" autoplay loop muted playsinline>
+            <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/jimengALL-nnzqETlXJA2rwzpepdhllHSa3QoE4E.mp4" type="video/mp4">
+        </video>
+
+        <!-- Video Overlay -->
+        <div class="video-overlay"></div>
+
+        <!-- Navigation Header -->
+        <header class="nav-header">
+            <div class="nav-dropdown">
+                <button class="nav-button">
+                    探索
+                    <span style="margin-left: 8px;">▼</span>
+                </button>
+                <div class="nav-dropdown-content">
+                    <a href="personal.html" class="nav-dropdown-item">个人主页</a>
+                    <a href="company.html" class="nav-dropdown-item">公司主页</a>
+                    <a href="products.html" class="nav-dropdown-item">产品业绩</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Company Philosophy Section -->
+            <div class="philosophy-section">
+                <div>
+                    <h1 class="main-title">
+                        科<span class="separator"></span>科学证道
+                    </h1>
+                    <h2 class="main-title">
+                        谛<span class="separator"></span>谛观因果
+                    </h2>
+                </div>
+                <div>
+                    <h3 class="subtitle">
+                        科谛<span class="separator"></span>AI量化
+                    </h3>
+                </div>
+            </div>
+
+            <!-- Navigation Section -->
+            <div class="nav-section">
+                <!-- Company Card -->
+                <button class="nav-card" onclick="window.location.href='company.html'">
+                    <div class="nav-card-content">
+                        <h4 class="nav-card-title">公司</h4>
+                        <p class="nav-card-desc">共同富裕践行者</p>
+                        <div class="nav-card-overlay"></div>
+                        <div class="nav-card-glow"></div>
+                    </div>
+                </button>
+
+                <!-- Founder Card -->
+                <button class="nav-card" onclick="window.location.href='personal.html'">
+                    <div class="nav-card-content">
+                        <h4 class="nav-card-title">创始人</h4>
+                        <p class="nav-card-desc">AI量化领域专家</p>
+                        <div class="nav-card-overlay"></div>
+                        <div class="nav-card-glow"></div>
+                    </div>
+                </button>
+
+                <!-- Product Card -->
+                <button class="nav-card" onclick="window.location.href='products.html'">
+                    <div class="nav-card-content">
+                        <h4 class="nav-card-title">产品</h4>
+                        <p class="nav-card-desc">不惧风暴的量化策略</p>
+                        <div class="nav-card-overlay"></div>
+                        <div class="nav-card-glow"></div>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Decorative Elements -->
+            <div class="decorative-dots dot-1"></div>
+            <div class="decorative-dots dot-2"></div>
+            <div class="decorative-dots dot-3"></div>
+            <div class="decorative-dots dot-4"></div>
+        </div>
+
+        <!-- Background Pattern -->
+        <div class="bg-pattern"></div>
+    </div>
+</body>
+</html> 
