@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>科谛量化 - AI量化投资专家</title>
+    <link rel="icon" type="image/png" href="assets/images/LOGO.png">
+    <link rel="shortcut icon" type="image/png" href="assets/images/LOGO.png">
     <style>
         * {
             margin: 0;
@@ -13,28 +15,39 @@
 
         body {
             font-family: 'Courier New', monospace;
-            background: #000;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
             color: #fbbf24;
             overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 页面主体包装 */
+        .page-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 600vh; /* 更新为600vh，容纳六个区域 */
         }
 
         .container {
             min-height: 100vh;
+            max-height: 100vh; /* 严格限制在一个屏幕高度内 */
             position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 0 24px;
+            overflow: hidden; /* 防止内容溢出 */
         }
 
-        /* Background Video */
+        /* Background Video - 只在第一个屏幕显示 */
         .bg-video {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: 100vh; /* 只覆盖第一个视窗高度 */
             object-fit: cover;
             z-index: 0;
         }
@@ -44,7 +57,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: 100vh; /* 只覆盖第一个视窗高度 */
             background: rgba(0, 0, 0, 0.4);
             z-index: 1;
         }
@@ -52,69 +65,83 @@
         /* Navigation Header */
         .nav-header {
             position: fixed;
-            top: 24px;
-            left: 24px;
-            z-index: 30;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50; /* 提高z-index，确保在所有内容之上 */
+            background: linear-gradient(to right, rgba(251, 191, 36, 0.15), rgba(245, 158, 11, 0.15), rgba(251, 191, 36, 0.15));
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.3);
+            padding: 8px 24px; /* 10px * 0.8 = 8px */
         }
 
-        .nav-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .nav-button {
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
             align-items: center;
-            padding: 12px 24px;
-            background: linear-gradient(to right, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.2));
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(251, 191, 36, 0.3);
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: flex-end; /* 底部对齐 */
+            justify-content: flex-start; /* 水平左对齐 */
+            padding: 5px 16px; /* 6px * 0.8 = 4.8px，取5px */
+            background: transparent;
+            border: none;
             border-radius: 8px;
             color: #fde047;
             font-weight: 900;
+            font-size: 1.2rem; /* 增大到与LOGO匹配 */
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            transform: skewX(-1deg);
-            filter: drop-shadow(0 0 8px rgba(253, 224, 71, 0.4));
+            text-decoration: none;
             cursor: pointer;
             transition: all 0.3s ease;
-            text-decoration: none;
+            gap: 8px; /* 图片和文字之间的间距 */
+            line-height: 1; /* 确保文字行高为1，避免额外间距 */
         }
 
-        .nav-button:hover {
-            background: linear-gradient(to right, rgba(251, 191, 36, 0.3), rgba(245, 158, 11, 0.3), rgba(217, 119, 6, 0.3));
-            filter: drop-shadow(0 0 15px rgba(253, 224, 71, 0.6));
+        .nav-logo img {
+            height: 26px; /* 32px * 0.8 = 25.6px，取26px */
+            width: auto;
+            object-fit: contain;
+            border-radius: 4px;
+            flex-shrink: 0; /* 防止图片被压缩 */
         }
 
-        .nav-dropdown-content {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 192px;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(251, 191, 36, 0.3);
-            border-radius: 8px;
-            margin-top: 0px;
-        }
-
-        .nav-dropdown:hover .nav-dropdown-content {
-            display: block;
-        }
-
-        .nav-dropdown-item {
-            display: block;
-            padding: 12px 16px;
-            color: #fde047;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            letter-spacing: 0.05em;
-        }
-
-        .nav-dropdown-item:hover {
-            background: rgba(251, 191, 36, 0.2);
+        .nav-logo:hover {
             color: #fef3c7;
+            transform: scale(1.02);
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: flex-end; /* 与科谛量化保持底部对齐 */
+            padding: 5px 16px; /* 与科谛量化保持相同的padding */
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            color: #fde047;
+            font-weight: 700;
+            font-size: 0.96rem; /* 1.2rem * 0.8 = 0.96rem */
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            line-height: 1; /* 与科谛量化保持相同行高 */
+        }
+
+        .nav-link:hover {
+            color: #fef3c7;
+            transform: translateY(-1px);
         }
 
         /* Main Content */
@@ -124,6 +151,7 @@
             text-align: center;
             position: relative;
             z-index: 2;
+            padding-top: 80px; /* 96px * 0.83 = 80px，进一步减少 */
         }
 
         /* Company Philosophy Section */
@@ -134,7 +162,7 @@
         }
 
         .main-title {
-            font-size: 2.7rem;
+            font-size: 2.16rem; /* 2.7rem * 0.8 */
             font-weight: 900;
             margin-bottom: 14px;
             background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
@@ -152,7 +180,7 @@
             color: #fde047;
             font-weight: 900;
             margin: 0 12px;
-            font-size: 0.8em;
+            font-size: 0.64em; /* 0.8em * 0.8 */
             display: inline-block;
             vertical-align: middle;
         }
@@ -160,11 +188,11 @@
         .separator::before {
             content: '●';
             color: #fde047;
-            font-size: 0.6em;
+            font-size: 0.48em; /* 0.6em * 0.8 */
         }
 
         .subtitle {
-            font-size: 1.35rem;
+            font-size: 1.08rem; /* 1.35rem * 0.8 */
             font-weight: 900;
             margin-top: 43px;
             background: linear-gradient(to right, #f59e0b, #fbbf24, #eab308);
@@ -217,12 +245,12 @@
         }
 
         .nav-card-title {
-            font-size: 2.5rem;
+            font-size: 1.6rem; /* 2rem * 0.8 */
             font-weight: 900;
             margin-bottom: 24px;
             transition: all 0.3s ease;
             letter-spacing: 0.15em;
-            text-transform: uppercase;
+            text-transform: none;
             transform: skewX(-1deg);
             background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
             -webkit-background-clip: text;
@@ -241,7 +269,7 @@
         }
 
         .nav-card-desc {
-            font-size: 1.25rem;
+            font-size: 1rem; /* 1.25rem * 0.8 */
             font-weight: 600;
             transition: all 0.3s ease;
             letter-spacing: 0.1em;
@@ -341,6 +369,7 @@
             left: 0;
             right: 0;
             bottom: 0;
+            height: 100vh; /* 只在第一个视窗高度显示 */
             opacity: 0.05;
             background-image: 
                 radial-gradient(circle at 25% 25%, #fbbf24 1px, transparent 1px),
@@ -348,14 +377,964 @@
             background-size: 50px 50px;
         }
 
+        /* Tradingview Section */
+        .tradingview-section {
+            min-height: 100vh;
+            width: 100%; /* 宽度100% */
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 24px;
+            margin-top: 0; /* 确保紧贴第一个区域 */
+            z-index: 10; /* 确保在背景之上，但在导航栏之下 */
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
+            border-top: 1px solid rgba(251, 191, 36, 0.2);
+        }
+
+        .tradingview-content {
+            width: 100%; /* 移除max-width限制，占用全宽 */
+            margin: 0;
+            position: relative;
+            z-index: 1; /* 确保内容在背景图案之上 */
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 40px 30px 40px; /* 大幅缩小上、左、右边距 */
+        }
+
+        /* Tradingview Background Pattern */
+        .tradingview-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.03;
+            background-image: 
+                radial-gradient(circle at 25% 25%, #fbbf24 1px, transparent 1px),
+                radial-gradient(circle at 75% 75%, #f59e0b 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 0;
+        }
+
+        .tradingview-title {
+            font-size: 2.16rem; /* 与main-title保持一致 */
+            font-weight: 900;
+            margin-bottom: 40px; /* 减少与模块的间距 */
+            background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.18em;
+            text-transform: none;
+            transform: skewX(-2deg);
+            filter: drop-shadow(0 0 9px rgba(251, 191, 36, 0.3));
+            text-align: left; /* 左对齐 */
+            align-self: flex-start; /* 左上角对齐 */
+            margin-left: 0; /* 确保完全贴左 */
+        }
+
+        .tradingview-modules {
+            display: flex;
+            gap: 24px; /* 大幅缩小模块间距 */
+            flex: 1; /* 占用所有剩余空间 */
+            align-items: stretch;
+            min-height: 0; /* 确保能缩小 */
+            width: 100%; /* 确保占用全宽 */
+        }
+
+        /* 系列介绍模块 - 左侧模块 */
+        .series-intro-module {
+            flex: 1 !important; /* 左侧模块占1份宽度 */
+            display: flex;
+            flex-direction: column;
+            padding: 0; /* 移除padding，让背景图完全填充 */
+            background: transparent; /* 去除模块背景 */
+            border: none; /* 去除金色边框 */
+            box-shadow: none; /* 去除外发光阴影 */
+            pointer-events: auto; /* 确保可以点击 */
+            cursor: pointer; /* 显示手型图标 */
+        }
+
+        /* GoldenFlow模块特定的背景图设置 */
+        .series-intro-module .module-background-section {
+            background-image: 
+                linear-gradient(to bottom, 
+                    transparent 0%, 
+                    transparent 70%, 
+                    rgba(15, 23, 42, 0.3) 85%, 
+                    rgba(15, 23, 42, 0.6) 95%, 
+                    rgba(15, 23, 42, 0.8) 100%
+                ),
+                url('assets/images/jimeng-GF.jpeg');
+        }
+
+
+
+        /* 系列介绍模块的背景图区域 */
+        .module-background-section {
+            flex: 1; /* 占据上半部分 */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 16px 16px 0 0; /* 上半部分圆角 */
+            min-height: 200px;
+            position: relative;
+        }
+
+        /* 增强模糊过渡效果的伪元素 */
+        .module-background-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(to bottom, 
+                transparent 0%, 
+                rgba(15, 23, 42, 0.4) 50%, 
+                rgba(15, 23, 42, 0.8) 100%
+            );
+            backdrop-filter: blur(4px);
+            pointer-events: none;
+        }
+
+        /* 系列介绍模块的文字区域 */
+        .module-text-section {
+            flex: 1; /* 占据下半部分 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(to bottom, 
+                rgba(15, 23, 42, 0.8) 0%, 
+                rgba(15, 23, 42, 0.85) 30%, 
+                rgba(15, 23, 42, 0.9) 100%
+            ); /* 渐变背景，与上方图片区域平滑过渡 */
+            backdrop-filter: blur(2px); /* 轻微模糊效果 */
+            border-radius: 0 0 16px 16px; /* 下半部分圆角 */
+            padding: 20px;
+            min-height: 200px;
+            position: relative;
+        }
+
+        /* 文字区域顶部的模糊过渡效果 */
+        .module-text-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: linear-gradient(to bottom, 
+                rgba(15, 23, 42, 0.9) 0%, 
+                rgba(15, 23, 42, 0.7) 50%, 
+                transparent 100%
+            );
+            backdrop-filter: blur(6px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* 介绍内容容器 */
+        .intro-content {
+            width: 100%;
+            text-align: left;
+            position: relative;
+            z-index: 2; /* 确保文字内容在模糊过渡效果之上 */
+        }
+
+        /* 介绍标题样式 */
+        .intro-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 16px;
+            background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.1em;
+            text-align: left; /* 标题靠左对齐 */
+        }
+
+        /* 介绍描述样式 */
+        .intro-description {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #fde047;
+            text-align: left;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 介绍列表样式 */
+        .intro-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.9rem; /* 改回原来的字体大小 */
+            line-height: 1.6; /* 改回原来的行高 */
+            color: #fde047;
+        }
+
+        .intro-list li {
+            margin-bottom: 8px; /* 改回原来的列表项间距 */
+            padding-left: 16px; /* 改回原来的左边距 */
+            position: relative;
+            transition: all 0.2s ease; /* 保留微妙的过渡效果 */
+        }
+
+
+
+        .intro-list li::before {
+            content: "●";
+            color: #fbbf24;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        /* 右侧合并模块 - 使用 jimeng-GF.jpeg 背景 */
+        .jimeng-gf-module {
+            flex: 2 !important; /* 右侧模块占左侧模块2倍宽度 (1:2比例) */
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            border-radius: 16px;
+            overflow: hidden;
+            min-height: 400px;
+            position: relative;
+        }
+
+        .jimeng-gf-module:hover {
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4), 0 0 40px rgba(251, 191, 36, 0.2);
+        }
+
+        .jimeng-gf-background {
+            width: 100%;
+            height: 100%;
+            background-image: url('assets/images/sol-performance.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 16px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .jimeng-gf-background::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: transparent; /* 完全透明，不遮挡图片 */
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .jimeng-gf-module:hover .jimeng-gf-background::after {
+            background: transparent; /* hover时也保持透明 */
+        }
+
+        /* BlueSpace模块样式 */
+        .bluespace-intro-module {
+            flex: 1 !important; /* 左侧模块占1份宽度 */
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            pointer-events: auto; /* 确保可以点击 */
+            cursor: pointer; /* 显示手型图标 */
+        }
+
+        /* BlueSpace模块特定的背景图设置 */
+        .bluespace-intro-module .module-background-section {
+            background-image: 
+                linear-gradient(to bottom, 
+                    transparent 0%, 
+                    transparent 70%, 
+                    rgba(15, 23, 42, 0.3) 85%, 
+                    rgba(15, 23, 42, 0.6) 95%, 
+                    rgba(15, 23, 42, 0.8) 100%
+                ),
+                url('assets/images/jimenggeren.jpeg');
+        }
+
+        .bluespace-bg-module {
+            flex: 2 !important; /* 右侧模块占2份宽度 (1:2比例) */
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            border-radius: 16px;
+            overflow: hidden;
+            min-height: 400px;
+            position: relative;
+        }
+
+        .bluespace-bg-module:hover {
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4), 0 0 40px rgba(251, 191, 36, 0.2);
+        }
+
+        .bluespace-background {
+            width: 100%;
+            height: 100%;
+            background-image: url('assets/images/zhongjing-performance.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 16px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .bluespace-background::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: transparent; /* 完全透明，不遮挡图片 */
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .bluespace-bg-module:hover .bluespace-background::after {
+            background: transparent; /* hover时也保持透明 */
+        }
+
+        /* Matrix模块样式 */
+        .matrix-intro-module {
+            flex: 1 !important; /* 左侧模块占1份宽度 */
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            pointer-events: auto; /* 确保可以点击 */
+            cursor: pointer; /* 显示手型图标 */
+        }
+
+        /* Matrix模块特定的背景图设置 */
+        .matrix-intro-module .module-background-section {
+            background-image: 
+                linear-gradient(to bottom, 
+                    transparent 0%, 
+                    transparent 70%, 
+                    rgba(15, 23, 42, 0.3) 85%, 
+                    rgba(15, 23, 42, 0.6) 95%, 
+                    rgba(15, 23, 42, 0.8) 100%
+                ),
+                url('assets/images/jimeng-matrix.jpeg');
+        }
+
+        .matrix-bg-module {
+            flex: 2 !important; /* 右侧模块占2份宽度 (1:2比例) */
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            border-radius: 16px;
+            overflow: hidden;
+            min-height: 400px;
+            position: relative;
+        }
+
+        .matrix-bg-module:hover {
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4), 0 0 40px rgba(251, 191, 36, 0.2);
+        }
+
+        .matrix-background {
+            width: 100%;
+            height: 100%;
+            background-image: url('assets/images/matrix_sample.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 16px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .matrix-background::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: transparent; /* 完全透明，不遮挡图片 */
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .matrix-bg-module:hover .matrix-background::after {
+            background: transparent; /* hover时也保持透明 */
+        }
+
+        .tradingview-module {
+            flex: 1; /* 默认平分空间 */
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(16px);
+            border: none; /* 删除金色边框 */
+            border-radius: 16px; /* 保持圆角 */
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            min-height: 400px; /* 设置最小高度 */
+            box-shadow: none; /* 删除外发光效果 */
+            pointer-events: auto; /* 确保可以点击 */
+        }
+
+        .tradingview-module:hover {
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4), 0 0 40px rgba(251, 191, 36, 0.2); /* 外围金色光晕 */
+        }
+
+        .module-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 24px; /* 增大内边距 */
+        }
+
+        .module-placeholder {
+            font-size: 2.8rem; /* 从4rem减小到2.8rem，适应更长的文字 */
+            font-weight: 900;
+            background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.1em; /* 从0.2em减小到0.1em，优化较长文字的间距 */
+            transform: skewX(-1deg);
+            filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.4)); /* 增强发光效果 */
+            text-align: center; /* 确保文字居中 */
+            line-height: 1.2; /* 添加行高以防文字换行时的显示效果 */
+        }
+
+        .placeholder-text {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.2em;
+            transform: skewX(-1deg);
+            filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.3));
+        }
+
+        .tradingview-placeholder {
+            width: 400px;
+            height: 300px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(16px);
+            border: none; /* 删除虚线边框 */
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .tradingview-placeholder:hover {
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4), 0 0 40px rgba(251, 191, 36, 0.2); /* 外围金色光晕 */
+        }
+
+        /* Tradingview01 Section - 完全模仿tradingview模块 */
+        .tradingview01-section {
+            min-height: 100vh;
+            width: 100%; /* 宽度100% */
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 24px;
+            margin-top: 0; /* 确保紧贴上一个区域 */
+            z-index: 10; /* 确保在背景之上，但在导航栏之下 */
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
+            border-top: 1px solid rgba(251, 191, 36, 0.2);
+        }
+
+        .tradingview01-content {
+            width: 100%; /* 移除max-width限制，占用全宽 */
+            margin: 0;
+            position: relative;
+            z-index: 1; /* 确保内容在背景图案之上 */
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 40px 30px 40px; /* 与Phoenix Rising一致的边距 */
+        }
+
+        /* Tradingview01 Background Pattern */
+        .tradingview01-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.03;
+            background-image: 
+                radial-gradient(circle at 25% 25%, #fbbf24 1px, transparent 1px),
+                radial-gradient(circle at 75% 75%, #f59e0b 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 0;
+        }
+
+        .tradingview01-title {
+            font-size: 2.16rem; /* 与main-title保持一致 */
+            font-weight: 900;
+            margin-bottom: 40px; /* 与Phoenix Rising一致 */
+            background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.18em;
+            text-transform: none;
+            transform: skewX(-2deg);
+            filter: drop-shadow(0 0 9px rgba(251, 191, 36, 0.3));
+            text-align: left; /* 左对齐 */
+            align-self: flex-start; /* 左上角对齐 */
+            margin-left: 0; /* 确保完全贴左 */
+        }
+
+        .tradingview01-modules {
+            display: flex;
+            gap: 24px; /* 大幅缩小模块间距 */
+            flex: 1; /* 占用所有剩余空间 */
+            align-items: stretch;
+            min-height: 0; /* 确保能缩小 */
+            width: 100%; /* 确保占用全宽 */
+        }
+
+        .tradingview01-module {
+            flex: 1; /* 平分空间 */
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(16px);
+            border: none; /* 删除金色边框 */
+            border-radius: 16px; /* 保持圆角 */
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            min-height: 400px; /* 设置最小高度 */
+            box-shadow: none; /* 删除外发光效果 */
+            pointer-events: auto; /* 确保可以点击 */
+        }
+
+        .tradingview01-module:hover {
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4), 0 0 40px rgba(251, 191, 36, 0.2); /* 外围金色光晕 */
+        }
+
+        .module01-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 24px; /* 增大内边距 */
+        }
+
+        .module01-placeholder {
+            font-size: 4rem; /* 增大字体 */
+            font-weight: 900;
+            background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.2em;
+            transform: skewX(-1deg);
+            filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.4)); /* 增强发光效果 */
+        }
+
+        .tradingview01-placeholder {
+            width: 400px;
+            height: 300px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(16px);
+            border: none; /* 删除虚线边框 */
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .tradingview01-placeholder:hover {
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4), 0 0 40px rgba(251, 191, 36, 0.2); /* 外围金色光晕 */
+        }
+
+        /* Tradingview02 Section */
+        .tradingview02-section {
+            min-height: 100vh;
+            width: 100%; /* 宽度100% */
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 24px;
+            margin-top: 0; /* 确保紧贴上一个区域 */
+            z-index: 10; /* 确保在背景之上，但在导航栏之下 */
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
+            border-top: 1px solid rgba(251, 191, 36, 0.2);
+        }
+
+        .tradingview02-content {
+            width: 100%; /* 移除max-width限制，占用全宽 */
+            margin: 0;
+            position: relative;
+            z-index: 1; /* 确保内容在背景图案之上 */
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 40px 30px 40px; /* 与Phoenix Rising一致的边距 */
+        }
+
+        /* Tradingview02 Background Pattern */
+        .tradingview02-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.03;
+            background-image: 
+                radial-gradient(circle at 25% 25%, #fbbf24 1px, transparent 1px),
+                radial-gradient(circle at 75% 75%, #f59e0b 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 0;
+        }
+
+        .tradingview02-title {
+            font-size: 2.16rem; /* 与main-title保持一致 */
+            font-weight: 900;
+            margin-bottom: 40px; /* 与Phoenix Rising一致 */
+            background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.18em;
+            text-transform: none;
+            transform: skewX(-2deg);
+            filter: drop-shadow(0 0 9px rgba(251, 191, 36, 0.3));
+            text-align: left; /* 左对齐 */
+            align-self: flex-start; /* 左上角对齐 */
+            margin-left: 0; /* 确保完全贴左 */
+        }
+
+        .tradingview02-modules {
+            display: flex;
+            gap: 24px; /* 大幅缩小模块间距 */
+            flex: 1; /* 占用所有剩余空间 */
+            align-items: stretch;
+            min-height: 0; /* 确保能缩小 */
+            width: 100%; /* 确保占用全宽 */
+        }
+
+        .tradingview02-module {
+            flex: 1; /* 平分空间 */
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(16px);
+            border: none; /* 删除金色边框 */
+            border-radius: 16px; /* 保持圆角 */
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            min-height: 400px; /* 设置最小高度 */
+            box-shadow: none; /* 删除外发光效果 */
+            pointer-events: auto; /* 确保可以点击 */
+        }
+
+        .tradingview02-module:hover {
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4), 0 0 40px rgba(251, 191, 36, 0.2); /* 外围金色光晕 */
+        }
+
+        .module02-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 24px; /* 增大内边距 */
+        }
+
+        .module02-placeholder {
+            font-size: 4rem; /* 增大字体 */
+            font-weight: 900;
+            background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.2em;
+            transform: skewX(-1deg);
+            filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.4)); /* 增强发光效果 */
+        }
+
+        .tradingview02-placeholder {
+            width: 400px;
+            height: 300px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(16px);
+            border: none; /* 删除虚线边框 */
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .tradingview02-placeholder:hover {
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4), 0 0 40px rgba(251, 191, 36, 0.2); /* 外围金色光晕 */
+        }
+
+        /* Tradingview03 Section */
+        .tradingview03-section {
+            min-height: 100vh;
+            width: 100%; /* 宽度100% */
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 24px;
+            margin-top: 0; /* 确保紧贴上一个区域 */
+            z-index: 10; /* 确保在背景之上，但在导航栏之下 */
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
+            border-top: 1px solid rgba(251, 191, 36, 0.2);
+        }
+
+        .tradingview03-content {
+            width: 100%; /* 移除max-width限制，占用全宽 */
+            margin: 0;
+            position: relative;
+            z-index: 1; /* 确保内容在背景图案之上 */
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 40px 30px 40px; /* 与Phoenix Rising一致的边距 */
+        }
+
+        /* Tradingview03 Background Pattern */
+        .tradingview03-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.03;
+            background-image: 
+                radial-gradient(circle at 25% 25%, #fbbf24 1px, transparent 1px),
+                radial-gradient(circle at 75% 75%, #f59e0b 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 0;
+        }
+
+        .tradingview03-title {
+            font-size: 2.16rem; /* 与main-title保持一致 */
+            font-weight: 900;
+            margin-bottom: 40px; /* 与Phoenix Rising一致 */
+            background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.18em;
+            text-transform: none;
+            transform: skewX(-2deg);
+            filter: drop-shadow(0 0 9px rgba(251, 191, 36, 0.3));
+            text-align: left; /* 左对齐 */
+            align-self: flex-start; /* 左上角对齐 */
+            margin-left: 0; /* 确保完全贴左 */
+        }
+
+        .tradingview03-modules {
+            display: flex;
+            gap: 24px; /* 大幅缩小模块间距 */
+            flex: 1; /* 占用所有剩余空间 */
+            align-items: stretch;
+            min-height: 0; /* 确保能缩小 */
+            width: 100%; /* 确保占用全宽 */
+        }
+
+        .tradingview03-module {
+            flex: 1; /* 平分空间 */
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(16px);
+            border: none; /* 删除金色边框 */
+            border-radius: 16px; /* 保持圆角 */
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            min-height: 400px; /* 设置最小高度 */
+            box-shadow: none; /* 删除外发光效果 */
+        }
+
+        .tradingview03-module:hover {
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4), 0 0 40px rgba(251, 191, 36, 0.2); /* 外围金色光晕 */
+        }
+
+        .module03-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 24px; /* 增大内边距 */
+        }
+
+        .module03-placeholder {
+            font-size: 4rem; /* 增大字体 */
+            font-weight: 900;
+            background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.2em;
+            transform: skewX(-1deg);
+            filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.4)); /* 增强发光效果 */
+        }
+
+        .tradingview03-placeholder {
+            width: 400px;
+            height: 300px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(16px);
+            border: none; /* 删除虚线边框 */
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .tradingview03-placeholder:hover {
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4), 0 0 40px rgba(251, 191, 36, 0.2); /* 外围金色光晕 */
+        }
+
+        /* Company Footer Section */
+        .company-footer-section {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e293b 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 40px;
+        }
+
+        .company-footer-content {
+            max-width: 800px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .footer-main {
+            margin-bottom: 60px;
+        }
+
+        .footer-brand {
+            margin-bottom: 40px;
+        }
+
+        .footer-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 16px;
+            background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transform: skewX(-1deg);
+            filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.4));
+            letter-spacing: 0.05em;
+        }
+
+        .footer-subtitle {
+            font-size: 1.2rem;
+            color: rgba(254, 240, 138, 0.8);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .footer-description {
+            margin-bottom: 40px;
+        }
+
+        .footer-description p {
+            font-size: 1.1rem;
+            color: rgba(254, 240, 138, 0.7);
+            line-height: 1.8;
+            letter-spacing: 0.02em;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-copyright {
+            padding-top: 40px;
+            border-top: 1px solid rgba(251, 191, 36, 0.2);
+        }
+
+        .footer-copyright p {
+            font-size: 0.95rem;
+            color: rgba(254, 240, 138, 0.6);
+            letter-spacing: 0.02em;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
+            .nav-header {
+                padding: 6px 16px; /* 8px * 0.8 = 6.4px，取6px */
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 10px; /* 12px * 0.83 = 10px */
+                align-items: center;
+            }
+
+            .nav-menu {
+                gap: 16px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav-logo {
+                font-size: 1rem; /* 1.2rem * 0.83 = 1rem */
+                padding: 4px 12px; /* 5px * 0.8 = 4px */
+                line-height: 1; /* 确保文字行高为1，避免额外间距 */
+            }
+
+            .nav-logo img {
+                height: 19px; /* 24px * 0.8 = 19.2px，取19px */
+                flex-shrink: 0; /* 防止图片被压缩 */
+            }
+
+            .nav-link {
+                font-size: 0.8rem; /* 1rem * 0.8 = 0.8rem */
+                padding: 4px 12px; /* 与科谛量化保持相同的padding */
+                line-height: 1; /* 与科谛量化保持相同行高 */
+            }
+
+            .main-content {
+                padding-top: 96px; /* 112px * 0.86 = 96px */
+            }
+
             .main-title {
-                font-size: 2rem;
+                font-size: 1.6rem; /* 2rem * 0.8 */
             }
             
             .subtitle {
-                font-size: 1.2rem;
+                font-size: 0.96rem; /* 1.2rem * 0.8 */
             }
             
             .nav-section {
@@ -369,16 +1348,277 @@
             }
             
             .nav-card-title {
-                font-size: 2rem;
+                font-size: 1.28rem; /* 1.6rem * 0.8 */
             }
             
             .nav-card-desc {
-                font-size: 1.1rem;
+                font-size: 0.88rem; /* 1.1rem * 0.8 */
+            }
+
+            .tradingview-title {
+                font-size: 1.6rem; /* 2.16rem * 0.74 */
+                margin-bottom: 30px; /* 移动端相应减少间距 */
+            }
+
+            .tradingview-content {
+                padding: 30px 20px 15px 20px; /* 移动端相应大幅缩小边距 */
+            }
+
+            .tradingview-modules {
+                flex-direction: column;
+                gap: 16px; /* 移动端相应缩小间距 */
+            }
+
+            /* 移动端系列介绍模块调整 */
+            .series-intro-module .module-background-section {
+                min-height: 150px; /* 移动端减少高度 */
+                background-image: 
+                    linear-gradient(to bottom, 
+                        transparent 0%, 
+                        transparent 65%, 
+                        rgba(15, 23, 42, 0.3) 80%, 
+                        rgba(15, 23, 42, 0.6) 90%, 
+                        rgba(15, 23, 42, 0.8) 100%
+                    ),
+                    url('assets/images/jimeng-GF.jpeg'); /* 移动端使用相同的图片 */
+            }
+
+            .module-background-section::after {
+                height: 30px; /* 移动端减少高度 */
+            }
+
+            .module-text-section {
+                min-height: 150px; /* 移动端减少高度 */
+                padding: 15px; /* 改回原来的移动端内边距 */
+                background: linear-gradient(to bottom, 
+                    rgba(15, 23, 42, 0.8) 0%, 
+                    rgba(15, 23, 42, 0.85) 30%, 
+                    rgba(15, 23, 42, 0.9) 100%
+                ); /* 移动端保持相同的渐变背景 */
+                backdrop-filter: blur(2px); /* 移动端保持轻微模糊 */
+            }
+
+            .module-text-section::before {
+                height: 20px; /* 移动端减少高度 */
+            }
+
+            /* 移动端介绍内容样式调整 */
+            .intro-title {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                text-align: left; /* 移动端也保持左对齐 */
+            }
+
+            .intro-description {
+                font-size: 0.8rem;
+                line-height: 1.5;
+            }
+
+            .tradingview-module {
+                min-height: 280px; /* 移动端适当减少高度 */
+            }
+
+            .module-content {
+                padding: 40px 20px; /* 移动端适当减少padding */
+            }
+
+            .module-placeholder {
+                font-size: 1.8rem; /* 2.8rem * 0.64 ≈ 1.8rem，移动端适当缩小 */
+            }
+
+            /* 移动端 jimeng-gf-module 样式 */
+            .jimeng-gf-module {
+                min-height: 280px; /* 移动端适当减少高度 */
+            }
+
+            .jimeng-gf-background {
+                border-radius: 12px; /* 移动端稍微减小圆角 */
+            }
+
+            .jimeng-gf-background::after {
+                border-radius: 12px; /* 与背景保持一致 */
+            }
+
+            /* 移动端 BlueSpace 模块样式 */
+            .bluespace-intro-module .module-background-section {
+                min-height: 150px; /* 移动端减少高度 */
+                background-image: 
+                    linear-gradient(to bottom, 
+                        transparent 0%, 
+                        transparent 65%, 
+                        rgba(15, 23, 42, 0.3) 80%, 
+                        rgba(15, 23, 42, 0.6) 90%, 
+                        rgba(15, 23, 42, 0.8) 100%
+                    ),
+                    url('assets/images/jimenggeren.jpeg'); /* 移动端使用相同的图片 */
+            }
+
+            .bluespace-bg-module {
+                min-height: 280px; /* 移动端适当减少高度 */
+            }
+
+            .bluespace-background {
+                border-radius: 12px; /* 移动端稍微减小圆角 */
+            }
+
+            .bluespace-background::after {
+                border-radius: 12px; /* 与背景保持一致 */
+            }
+
+            /* 移动端 Matrix 模块样式 */
+            .matrix-intro-module .module-background-section {
+                min-height: 150px; /* 移动端减少高度 */
+                background-image: 
+                    linear-gradient(to bottom, 
+                        transparent 0%, 
+                        transparent 65%, 
+                        rgba(15, 23, 42, 0.3) 80%, 
+                        rgba(15, 23, 42, 0.6) 90%, 
+                        rgba(15, 23, 42, 0.8) 100%
+                    ),
+                    url('assets/images/jimeng-matrix.jpeg'); /* 移动端使用相同的图片 */
+            }
+
+            .matrix-bg-module {
+                min-height: 280px; /* 移动端适当减少高度 */
+            }
+
+            .matrix-background {
+                border-radius: 12px; /* 移动端稍微减小圆角 */
+            }
+
+            .matrix-background::after {
+                border-radius: 12px; /* 与背景保持一致 */
+            }
+
+            .tradingview-placeholder {
+                width: 300px;
+                height: 220px;
+            }
+
+            .placeholder-text {
+                font-size: 3rem; /* 4rem * 0.75 */
+            }
+
+            .tradingview01-title {
+                font-size: 1.6rem; /* 2.16rem * 0.74 */
+                margin-bottom: 30px; /* 移动端相应减少间距 */
+            }
+
+            .tradingview01-content {
+                padding: 30px 20px 15px 20px; /* 移动端相应大幅缩小边距 */
+            }
+
+            .tradingview01-modules {
+                flex-direction: column;
+                gap: 16px; /* 移动端相应缩小间距 */
+            }
+
+            .tradingview01-module {
+                min-height: 280px; /* 移动端适当减少高度 */
+            }
+
+            .module01-content {
+                padding: 40px 20px; /* 移动端适当减少padding */
+            }
+
+            .module01-placeholder {
+                font-size: 2.8rem; /* 移动端适当减少字体 */
+            }
+
+            .tradingview02-title {
+                font-size: 1.6rem; /* 2.16rem * 0.74 */
+                margin-bottom: 30px; /* 移动端相应减少间距 */
+            }
+
+            .tradingview02-content {
+                padding: 30px 20px 15px 20px; /* 移动端相应大幅缩小边距 */
+            }
+
+            .tradingview02-modules {
+                flex-direction: column;
+                gap: 16px; /* 移动端相应缩小间距 */
+            }
+
+            .tradingview02-module {
+                min-height: 280px; /* 移动端适当减少高度 */
+            }
+
+            .module02-content {
+                padding: 40px 20px; /* 移动端适当减少padding */
+            }
+
+            .module02-placeholder {
+                font-size: 2.8rem; /* 移动端适当减少字体 */
+            }
+
+            .tradingview03-title {
+                font-size: 1.6rem; /* 2.16rem * 0.74 */
+                margin-bottom: 30px; /* 移动端相应减少间距 */
+            }
+
+            .tradingview03-content {
+                padding: 30px 20px 15px 20px; /* 移动端相应大幅缩小边距 */
+            }
+
+            .tradingview03-modules {
+                flex-direction: column;
+                gap: 16px; /* 移动端相应缩小间距 */
+            }
+
+            .tradingview03-module {
+                min-height: 280px; /* 移动端适当减少高度 */
+            }
+
+            .module03-content {
+                padding: 40px 20px; /* 移动端适当减少padding */
+            }
+
+            .module03-placeholder {
+                font-size: 2.8rem; /* 移动端适当减少字体 */
+            }
+
+            /* Company Footer 移动端样式 */
+            .company-footer-section {
+                padding: 60px 20px;
+            }
+
+            .footer-title {
+                font-size: 2.2rem;
+            }
+
+            .footer-subtitle {
+                font-size: 1rem;
+            }
+
+            .footer-description p {
+                font-size: 1rem;
+            }
+
+            .footer-copyright p {
+                font-size: 0.9rem;
             }
         }
     </style>
 </head>
 <body>
+    <div class="page-wrapper">
+        <!-- Navigation Header - 固定在整个页面顶部 -->
+        <header class="nav-header">
+            <div class="nav-container">
+                <a href="index.html" class="nav-logo">
+                    <img src="assets/images/LOGO.png" alt="科谛量化 Logo">
+                    科谛量化
+                </a>
+                <nav class="nav-menu">
+                    <a href="personal.html" class="nav-link">个人主页</a>
+                    <a href="company.html" class="nav-link">公司主页</a>
+                    <a href="products.html" class="nav-link">产品业绩</a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- First Screen - Video Background Section -->
     <div class="container">
         <!-- Background Video -->
         <video class="bg-video" autoplay loop muted playsinline>
@@ -387,21 +1627,6 @@
 
         <!-- Video Overlay -->
         <div class="video-overlay"></div>
-
-        <!-- Navigation Header -->
-        <header class="nav-header">
-            <div class="nav-dropdown">
-                <button class="nav-button">
-                    探索
-                    <span style="margin-left: 8px;">▼</span>
-                </button>
-                <div class="nav-dropdown-content">
-                    <a href="personal.html" class="nav-dropdown-item">个人主页</a>
-                    <a href="company.html" class="nav-dropdown-item">公司主页</a>
-                    <a href="products.html" class="nav-dropdown-item">产品业绩</a>
-                </div>
-            </div>
-        </header>
 
         <!-- Main Content -->
         <div class="main-content">
@@ -425,30 +1650,30 @@
             <!-- Navigation Section -->
             <div class="nav-section">
                 <!-- Company Card -->
-                <button class="nav-card" onclick="window.location.href='company.html'">
+                    <button class="nav-card" onclick="scrollToSection('phoenix-series')">
                     <div class="nav-card-content">
-                        <h4 class="nav-card-title">公司</h4>
-                        <p class="nav-card-desc">共同富裕践行者</p>
+                            <h4 class="nav-card-title">GoldenFlow</h4>
+                            <p class="nav-card-desc">数字货币全套方案</p>
                         <div class="nav-card-overlay"></div>
                         <div class="nav-card-glow"></div>
                     </div>
                 </button>
 
                 <!-- Founder Card -->
-                <button class="nav-card" onclick="window.location.href='personal.html'">
+                    <button class="nav-card" onclick="scrollToSection('phoenix-crypto')">
                     <div class="nav-card-content">
-                        <h4 class="nav-card-title">创始人</h4>
-                        <p class="nav-card-desc">AI量化领域专家</p>
+                            <h4 class="nav-card-title">BlueSpace</h4>
+                            <p class="nav-card-desc">中国证券投资顾问</p>
                         <div class="nav-card-overlay"></div>
                         <div class="nav-card-glow"></div>
                     </div>
                 </button>
 
                 <!-- Product Card -->
-                <button class="nav-card" onclick="window.location.href='products.html'">
+                    <button class="nav-card" onclick="scrollToSection('phoenix-us-stocks')">
                     <div class="nav-card-content">
-                        <h4 class="nav-card-title">产品</h4>
-                        <p class="nav-card-desc">不惧风暴的量化策略</p>
+                            <h4 class="nav-card-title">Matrix</h4>
+                            <p class="nav-card-desc">全品类 多因子 跨周期</p>
                         <div class="nav-card-overlay"></div>
                         <div class="nav-card-glow"></div>
                     </div>
@@ -465,5 +1690,176 @@
         <!-- Background Pattern -->
         <div class="bg-pattern"></div>
     </div>
+
+        <!-- Second Screen - Phoenix Series Section -->
+        <div class="tradingview-section" id="phoenix-series">
+            <div class="tradingview-content">
+                <h2 class="tradingview-title">旗舰产品：GoldenFlow</h2>
+                <div class="tradingview-modules">
+                    <!-- 左侧模块：系列介绍 -->
+                    <div class="tradingview-module series-intro-module" onclick="window.open('https://sz9dp8z7wi.feishu.cn/docx/IhFXdCmzuoGDhsxfJwbc5UGLnpc?from=from_copylink', '_blank')">
+                        <div class="module-background-section">
+                            <!-- 上半部分：背景图区域 -->
+                        </div>
+                        <div class="module-text-section">
+                            <div class="intro-content">
+                                <h3 class="intro-title">「GoldenFlow」说明书</h3>
+                                <ul class="intro-list">
+                                    <li>基于TradingView平台，一键订阅，快速上手。</li>
+                                    <li>专注数字货币交易</li>
+                                    <li>点击即可让百亿私募科技总监为您打工！</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 右侧合并模块：使用 jimeng-GF.jpeg 背景 -->
+                    <div class="tradingview-module jimeng-gf-module">
+                        <div class="jimeng-gf-background">
+                            <!-- 背景图片区域 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Third Screen - Phoenix Crypto Section -->
+        <div class="tradingview01-section" id="phoenix-crypto">
+            <div class="tradingview01-content">
+                <h2 class="tradingview01-title">旗舰产品：BlueSpace</h2>
+                <div class="tradingview01-modules">
+                    <!-- 左侧模块：BlueSpace介绍 -->
+                    <div class="tradingview01-module bluespace-intro-module" onclick="window.open('https://sz9dp8z7wi.feishu.cn/docx/XgGedLoPDoo8knx2DQuc6JqQnSf?from=from_copylink', '_blank')">
+                        <div class="module-background-section">
+                            <!-- 上半部分：背景图区域 -->
+                        </div>
+                        <div class="module-text-section">
+                            <div class="intro-content">
+                                <h3 class="intro-title">「BlueSpace」说明书</h3>
+                                <ul class="intro-list">
+                                    <li>基于TradingView平台，专注中国证券市场。</li>
+                                    <li>深度研究A股规律，融合量化分析与投资顾问服务！</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 右侧合并模块：使用背景图 -->
+                    <div class="tradingview01-module bluespace-bg-module">
+                        <div class="bluespace-background">
+                            <!-- 背景图片区域 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fourth Screen - Phoenix US-Stocks Section -->
+        <div class="tradingview02-section" id="phoenix-us-stocks">
+            <div class="tradingview02-content">
+                <h2 class="tradingview02-title">旗舰产品：Matrix</h2>
+                <div class="tradingview02-modules">
+                    <!-- 左侧模块：Matrix介绍 -->
+                    <div class="tradingview02-module matrix-intro-module" onclick="window.open('https://sz9dp8z7wi.feishu.cn/docx/D3CCdkDBTo19YxxU4FfcUDh0nfb?from=from_copylink', '_blank')">
+                        <div class="module-background-section">
+                            <!-- 上半部分：背景图区域 -->
+                        </div>
+                        <div class="module-text-section">
+                            <div class="intro-content">
+                                <h3 class="intro-title">「Matrix」说明书</h3>
+                                <ul class="intro-list">
+                                    <li>全品类多因子跨周期投资策略。</li>
+                                    <li>覆盖全球市场，智能风险管理！</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 右侧合并模块：使用背景图 -->
+                    <div class="tradingview02-module matrix-bg-module">
+                        <div class="matrix-background">
+                            <!-- 背景图片区域 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fifth Screen - Phoenix A-Stocks Section -->
+        <div class="tradingview03-section" id="phoenix-a-stocks">
+            <div class="tradingview03-content">
+                <h2 class="tradingview03-title">敬请期待：HKStock</h2>
+                <div class="tradingview03-modules">
+                    <div class="tradingview03-module">
+                        <div class="module03-content">
+                            <span class="module03-placeholder"></span>
+                        </div>
+                    </div>
+                    <div class="tradingview03-module">
+                        <div class="module03-content">
+                            <span class="module03-placeholder"></span>
+                        </div>
+                    </div>
+                    <div class="tradingview03-module">
+                        <div class="module03-content">
+                            <span class="module03-placeholder"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sixth Screen - Company Footer Section -->
+        <div class="company-footer-section">
+            <div class="company-footer-content">
+                <div class="footer-main">
+                    <div class="footer-brand">
+                        <h2 class="footer-title">科谛量化</h2>
+                        <p class="footer-subtitle">AI驱动的量化投资专家</p>
+                    </div>
+                    <div class="footer-description">
+                        <p>致力于为投资者提供先进的量化投资解决方案，运用人工智能技术优化投资策略，实现稳健增长。</p>
+                    </div>
+                </div>
+                <div class="footer-copyright">
+                    <p>&copy; 2025 科谛量化. 专注量化投资与AI技术创新</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 科谛量化按钮回到顶部功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLogo = document.querySelector('.nav-logo');
+            
+            // 为科谛量化按钮添加点击事件
+            navLogo.addEventListener('click', function(e) {
+                e.preventDefault(); // 阻止默认链接行为
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // 滚动到指定区域
+        function scrollToSection(sectionId) {
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLogo = document.querySelector('.nav-logo');
+            
+            // 为科谛量化按钮添加点击事件
+            navLogo.addEventListener('click', function(e) {
+                e.preventDefault(); // 阻止默认链接行为
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html> 

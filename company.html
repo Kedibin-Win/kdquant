@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>公司主页 - 科谛量化</title>
+    <link rel="icon" type="image/png" href="assets/images/LOGO.png">
+    <link rel="shortcut icon" type="image/png" href="assets/images/LOGO.png">
     <style>
         * {
             margin: 0;
@@ -31,97 +33,81 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(251, 191, 36, 0.2);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            right: 0;
             z-index: 50;
+            background: linear-gradient(to right, rgba(251, 191, 36, 0.15), rgba(245, 158, 11, 0.15), rgba(251, 191, 36, 0.15));
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.3);
+            padding: 8px 24px;
         }
 
         .nav-container {
-            max-width: 1152px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 12px 16px;
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
         }
 
-        .nav-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .nav-title {
-            font-size: 1.5rem;
-            font-weight: 900;
-            letter-spacing: 0.05em;
-            background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            transform: skewX(-1deg);
-            filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.4));
-            cursor: pointer;
-            transition: opacity 0.3s ease;
+        .nav-logo {
             display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .nav-title:hover {
-            opacity: 0.8;
-        }
-
-        .nav-dropdown-content {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 192px;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(251, 191, 36, 0.3);
+            align-items: flex-end;
+            justify-content: flex-start;
+            padding: 5px 16px;
+            background: transparent;
+            border: none;
             border-radius: 8px;
-            margin-top: 0px;
-        }
-
-        .nav-dropdown:hover .nav-dropdown-content {
-            display: block;
-        }
-
-        .nav-dropdown-item {
-            display: block;
-            padding: 12px 16px;
             color: #fde047;
+            font-weight: 900;
+            font-size: 1.2rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
             text-decoration: none;
+            cursor: pointer;
             transition: all 0.3s ease;
-            letter-spacing: 0.05em;
+            gap: 8px;
+            line-height: 1;
         }
 
-        .nav-dropdown-item:hover {
-            background: rgba(251, 191, 36, 0.2);
+        .nav-logo img {
+            height: 26px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .nav-logo:hover {
             color: #fef3c7;
+            transform: scale(1.02);
         }
 
         .nav-menu {
             display: flex;
-            gap: 32px;
             align-items: center;
+            gap: 32px;
         }
 
         .nav-link {
-            color: rgba(254, 240, 138, 0.8);
-            text-decoration: none;
-            transition: color 0.3s ease;
+            display: flex;
+            align-items: flex-end;
+            padding: 5px 16px;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            color: #fde047;
+            font-weight: 700;
+            font-size: 0.96rem;
             letter-spacing: 0.05em;
-            transform: skewX(-1deg);
-            filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.3));
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            line-height: 1;
         }
 
         .nav-link:hover {
-            color: #fde047;
+            color: #fef3c7;
+            transform: translateY(-1px);
         }
 
         /* Hero Section */
@@ -150,6 +136,8 @@
             border: 2px solid rgba(251, 191, 36, 0.3);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
         }
 
         .hero-content {
@@ -575,8 +563,37 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
+            .nav-header {
+                padding: 6px 16px;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 10px;
+                align-items: center;
+            }
+
             .nav-menu {
-                display: none;
+                gap: 16px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav-logo {
+                font-size: 1rem;
+                padding: 4px 12px;
+                line-height: 1;
+            }
+
+            .nav-logo img {
+                height: 19px;
+                flex-shrink: 0;
+            }
+
+            .nav-link {
+                font-size: 0.8rem;
+                padding: 4px 12px;
+                line-height: 1;
             }
 
             .hero-top {
@@ -637,25 +654,15 @@
     <!-- Navigation Header -->
     <header class="nav-header">
         <div class="nav-container">
-            <div class="nav-dropdown">
-                <div class="nav-title">
-                    公司主页
-                    <span>▼</span>
-                </div>
-                <div class="nav-dropdown-content">
-                    <a href="index.html" class="nav-dropdown-item">主页</a>
-                    <a href="personal.html" class="nav-dropdown-item">个人主页</a>
-                    <a href="company.html" class="nav-dropdown-item">公司主页</a>
-                    <a href="products.html" class="nav-dropdown-item">产品业绩</a>
-                </div>
-            </div>
-
-            <div class="nav-menu">
-                <a href="#about" class="nav-link">公司简介</a>
-                <a href="#strategies" class="nav-link">量化策略</a>
-                <a href="#team" class="nav-link">团队介绍</a>
-                <a href="#contact" class="nav-link">联系我们</a>
-            </div>
+            <a href="index.html" class="nav-logo">
+                <img src="assets/images/LOGO.png" alt="科谛量化 Logo">
+                科谛量化
+            </a>
+            <nav class="nav-menu">
+                <a href="personal.html" class="nav-link">个人主页</a>
+                <a href="company.html" class="nav-link">公司主页</a>
+                <a href="products.html" class="nav-link">产品业绩</a>
+            </nav>
         </div>
     </header>
 
@@ -663,7 +670,7 @@
         <!-- Hero Section -->
         <section id="about" class="hero-section">
             <div class="hero-top">
-                <img src="assets/images/company-logo.jpg" alt="科谛量化 Logo" class="hero-logo">
+                <img src="assets/images/LOGO.png" alt="科谛量化 Logo" class="hero-logo">
                 <div class="hero-content">
                     <h1 class="hero-title">科谛量化</h1>
                     <p class="hero-description">
@@ -850,7 +857,7 @@
                                 <div class="contact-icon">📧</div>
                                 <div class="contact-info">
                                     <p>邮箱</p>
-                                    <p>contact@keditech.com</p>
+                                    <p>待定</p>
                                 </div>
                             </div>
 
@@ -858,7 +865,7 @@
                                 <div class="contact-icon">📞</div>
                                 <div class="contact-info">
                                     <p>电话</p>
-                                    <p>400-888-9999</p>
+                                    <p>待定</p>
                                 </div>
                             </div>
 
@@ -866,7 +873,7 @@
                                 <div class="contact-icon">📍</div>
                                 <div class="contact-info">
                                     <p>地址</p>
-                                    <p>广东省广州市天河区珠江新城</p>
+                                    <p>待定</p>
                                 </div>
                             </div>
 
@@ -874,9 +881,7 @@
                                 <div class="contact-icon">🌐</div>
                                 <div class="contact-info">
                                     <p>官网</p>
-                                    <a href="https://keditech.com" target="_blank" style="color: rgba(254, 240, 138, 0.8); text-decoration: none; transition: color 0.3s ease;">
-                                        www.keditech.com
-                                    </a>
+                                    <p>待定</p>
                                 </div>
                             </div>
                         </div>
